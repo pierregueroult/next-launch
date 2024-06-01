@@ -5,3 +5,7 @@
 /_next/
 /dist/
 /tmp/
+
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
