@@ -5,3 +5,5 @@
 /_next/
 /dist/
 /tmp/
+
+pnpm-lock.yaml
