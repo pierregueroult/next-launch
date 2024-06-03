@@ -1,0 +1,13 @@
+diff_package=$(git diff HEAD^ HEAD -- ./package.json)
+diff_lock=$(git diff HEAD^ HEAD -- ./pnpm-lock.yaml)
+
+if [[ -n $diff_package ]] || [[ -n $diff_lock ]]; then
+  echo "🤖 Changes detected in dependencies files, updating ..."
+  pnpm install
+else
+  echo "🤖 No changes detected in dependencies files, skipping ..."
+fi
+
+echo "🤖 Thanks for keeping the dependencies up to date!"
+
+exit 0
