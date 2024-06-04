@@ -19,7 +19,7 @@
     "db:push": "prisma db push --schema src/db/schema.prisma",
     "db:studio": "prisma studio --schema src/db/schema.prisma",
     "email:dev": "maildev -outgoing-host smtp.nextlaunch.com -outgoing-secure --outgoing-user 'myuser' --outgoing-pass 'mypass'",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate  --schema src/db/schema.prisma"
   },
   "dependencies": {
     "@prisma/client": "5.14.0",
