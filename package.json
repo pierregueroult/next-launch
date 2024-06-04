@@ -5,13 +5,23 @@
   "scripts": {
     "dev": "NODE_ENV=development ts-node src/server/main.ts",
     "start": "NODE_ENV=production ts-node src/server/main.ts",
-    "build": "next build",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "format": "prettier --write .",
-    "prepare": "husky"
+    "format:check": "prettier --check .",
+    "prepare": "husky",
+    "database:up": "docker compose -f src/db/database.docker-compose.yaml --env-file .env up -d && pnpm db:init",
+    "database:down": "docker compose -f src/db/database.docker-compose.yaml --env-file .env down --volumes",
+    "database:start": "docker compose -f src/db/database.docker-compose.yaml --env-file .env start",
+    "database:stop": "docker compose -f src/db/database.docker-compose.yaml --env-file .env stop",
+    "db:init": "pnpm db:generate && pnpm db:push",
+    "db:generate": "prisma generate --schema src/db/schema.prisma",
+    "db:push": "prisma db push --schema src/db/schema.prisma",
+    "db:studio": "prisma studio --schema src/db/schema.prisma",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@prisma/client": "5.14.0",
     "express": "^4.19.2",
     "next": "14.2.2",
     "react": "^18",
@@ -42,6 +52,7 @@
     "postcss": "^8",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.6.1",
+    "prisma": "^5.14.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }
