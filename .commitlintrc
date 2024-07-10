@@ -15,7 +15,9 @@
         "revert",
         "deploy",
         "build",
-        "WIP"
+        "WIP",
+        "important",
+        "breaking"
       ]
     ],
     "type-case": [
