@@ -23,9 +23,6 @@ app
   })
   .catch((err: any) => {
     // eslint-disable-next-line no-console
-    console.log(
-      "⚡Next-launch: Error occured while starting the server: ",
-      err,
-    );
+    console.log("⚡Next-launch: Error occured while starting the server: ", err);
     process.exit(1);
   });
