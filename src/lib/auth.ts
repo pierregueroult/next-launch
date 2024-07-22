@@ -1,20 +1,20 @@
 import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { getUserByEmail, getUserById, verifyUserById } from "@/services/user";
+import { getUserByEmail, getUserById, verifyUserEmailById } from "@/services/user";
 import Credentials from "next-auth/providers/credentials";
 import { getAccountByUserId } from "@/services/account";
-import { deleteTwoFactorConfirmation, getTwoFactorConfirmationByUserId } from "@/services/two-factor-confirmation";
-import bcrypt from "bcrypt";
+import { deleteTwoFactorConfirmationById, getTwoFactorConfirmationByUserId } from "@/services/two-factor-confirmation";
+import bcrypt from "bcryptjs";
 import { UserRole } from "@/db/types";
 import prisma from "@/db";
-import LoginSchema from "@/schemas/auth/login";
+import { loginSchema } from "@/schemas/auth/login";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   events: {
     async linkAccount({ user }) {
       const { id, email } = user;
       if (!id || !email) return;
-      await verifyUserById(email, id);
+      await verifyUserEmailById(email, id);
     },
   },
   callbacks: {
@@ -22,47 +22,38 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (account?.provider !== "credentials") return true;
 
       if (!user.id) return false;
-
       const userData = await getUserById(user.id);
-
       if (!userData?.emailVerified) return false;
-      if (!userData.isTwoFactorEnabled) {
-        const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(userData.id);
-        if (!twoFactorConfirmation) return false;
 
-        await deleteTwoFactorConfirmation(userData.id);
+      if (!userData.isTwoFactorEnabled) {
+        const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(user.id);
+        if (!twoFactorConfirmation) return false;
+        await deleteTwoFactorConfirmationById(twoFactorConfirmation.id);
       }
       return true;
     },
     async session({ session, token }) {
-      // const updatedSession = session;
-      // if (token.sub && session.user) updatedSession.user.id = token.sub;
-      // if (token.role && session.user) updatedSession.user.role = token.role as UserRole;
-      // if (session.user) {
-      //   updatedSession.user.name = token.name;
-      //   updatedSession.user.email = token.email as string;
-      //   updatedSession.user.isOAuth = token.isOAuth as boolean;
-      // }
-      // return updatedSession;
-      if (session.user) {
-        const { sub, role, name, email, isOAuth } = token;
-        const result = {
-          ...session,
-          user: {
-            ...session.user,
-            ...(sub && { id: sub }),
-            name,
-            email: email as string,
-            isOAuth: isOAuth as boolean,
-          },
-        };
-        if (role) result.user.role = role as UserRole;
-        return result;
+      const newSession = { ...session, user: { ...session.user } };
+
+      if (token.sub && newSession.user) {
+        newSession.user.id = token.sub;
       }
-      return session;
+
+      if (token.role && newSession.user) {
+        newSession.user.role = token.role as UserRole;
+      }
+
+      if (newSession.user) {
+        newSession.user.name = token.name;
+        newSession.user.email = token.email as string;
+        newSession.user.isOAuth = token.isOAuth as boolean;
+      }
+
+      return newSession;
     },
     async jwt({ token }) {
       if (!token.sub) return token;
+
       const user = await getUserById(token.sub);
       if (!user) return token;
 
@@ -83,14 +74,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
       async authorize(credentials) {
-        const fields = LoginSchema.safeParse(credentials);
+        const fields = loginSchema.safeParse(credentials);
         if (!fields.success) return null;
+
         const { email, password } = fields.data;
         const user = await getUserByEmail(email);
-        if (!user || !user.password) return null;
+        if (!user) return null;
+
         const passwordMatch = await bcrypt.compare(password, user.password);
-        if (passwordMatch) return user;
-        return null;
+        if (!passwordMatch) return null;
+
+        return user;
       },
     }),
   ],
