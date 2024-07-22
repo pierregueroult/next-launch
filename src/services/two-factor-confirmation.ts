@@ -1,57 +1,31 @@
 import prisma from "@/db";
 import { TwoFactorConfirmation } from "@/db/types";
 
-export const getTwoFactorConfirmationByUserId = async (userId: string): Promise<TwoFactorConfirmation | null> => {
-  try {
-    const twoFactorConfirmation = await prisma.twoFactorConfirmation.findUnique({
-      where: {
-        userId,
-      },
-    });
-    return twoFactorConfirmation;
-  } catch {
-    return null;
-  }
-};
+export const getTwoFactorConfirmationByUserId = async (userId: string): Promise<TwoFactorConfirmation | null> =>
+  prisma.twoFactorConfirmation.findUnique({
+    where: { userId },
+  });
 
-export const deleteTwoFactorConfirmation = async (
-  twoFactorConfirmationId: string,
-): Promise<TwoFactorConfirmation | null> => {
-  try {
-    const twoFactorConfirmation = await prisma.twoFactorConfirmation.delete({
-      where: {
-        id: twoFactorConfirmationId,
-      },
-    });
-    return twoFactorConfirmation;
-  } catch {
-    return null;
-  }
-};
-
-export const deleteTwoFactorConfirmationByUserId = async (userId: string): Promise<TwoFactorConfirmation | null> => {
+export const deleteTwoFactorConfirmationById = async (id: string): Promise<void> => {
   try {
     await prisma.twoFactorConfirmation.delete({
-      where: {
-        userId,
-      },
+      where: { id },
     });
   } catch {
-    // TODO: refactor this
+    /* empty */
   }
-  return null;
 };
 
 export const createTwoFactorConfirmation = async (userId: string): Promise<TwoFactorConfirmation> => {
   try {
-    await deleteTwoFactorConfirmationByUserId(userId);
+    await prisma.twoFactorConfirmation.delete({ where: { userId } });
   } catch {
-    // TODO: refactor this
+    /* empty */
   }
-  const twoFactorConfirmation = await prisma.twoFactorConfirmation.create({
+
+  return prisma.twoFactorConfirmation.create({
     data: {
       userId,
     },
   });
-  return twoFactorConfirmation;
 };
