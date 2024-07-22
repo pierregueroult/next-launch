@@ -1,17 +1,17 @@
-import * as z from "zod";
+import { z } from "zod";
 
-const LoginSchema = z.object({
+export const loginSchema = z.object({
   email: z.string().email({
-    message: "L'adresse email saisie n'est pas valide",
+    message: "Login.EmailInvalid",
   }),
   password: z.string().min(8, {
-    message: "Le mot de passe saisie doit contenir au moins 8 caractères",
+    message: "Login.PasswordTooShort",
   }),
   code: z.optional(
-    z.string().min(4, {
-      message: "Le code saisie doit contenir au moins 4 caractères",
+    z.string().length(6, {
+      message: "Login.CodeTooShort",
     }),
   ),
 });
 
-export default LoginSchema;
+export type LoginSchema = z.infer<typeof loginSchema>;

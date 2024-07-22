@@ -17,7 +17,8 @@
         "build",
         "WIP",
         "important",
-        "breaking"
+        "breaking",
+        "chore"
       ]
     ],
     "type-case": [
