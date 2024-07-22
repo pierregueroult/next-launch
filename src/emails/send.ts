@@ -7,8 +7,8 @@ type Send = Omit<MailOptions, "html"> & {
   template: ReactElement | string;
 };
 
-const send = ({ template, ...options }: Send) => {
-  transporter.sendMail({
+const send = async ({ template, ...options }: Send) => {
+  await transporter.sendMail({
     from: process.env.EMAIL_FROM ?? "",
     html: typeof template === "string" ? template : render(template),
     ...options,
