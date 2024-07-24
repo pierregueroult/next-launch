@@ -1,4 +1,11 @@
 import React, { ReactNode } from "react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Welcome to Next Launch ",
+  description:
+    "A free and open source web app boilerplate based on Next.js, offering you an easy way to get started with your next project.",
+};
 
 function Page(): ReactNode {
   return (
