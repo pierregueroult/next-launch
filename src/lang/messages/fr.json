@@ -1,0 +1,13 @@
+{
+  "Welcome": {
+    "title": "Bienvenue sur Next Launch 🚀!",
+    "description": "Un boilerplate web open source gratuit et basé sur Next.js, offrant une manière simple de commencer votre prochain projet.",
+    "headless": "C'est un projet sans interface graphique, ce qui signifie que vous décidez de la façon dont votre application sera affichée. Défiler pour voir les fonctionnalités.",
+    "contribute": {
+      "made": "Fait avec ❤️ par",
+      "by": "Pierre Guéroult",
+      "on": ". Contribuer sur",
+      "github": "GitHub"
+    }
+  }
+}
