@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 import { Metadata } from "next";
 import { useTranslations } from "next-intl";
+import Languages from "@/components/languages";
 
 export const metadata: Metadata = {
   title: "Welcome to Next Launch ",
@@ -17,7 +18,7 @@ function Page(): ReactNode {
         <h1 className="mt-8 text-center text-3xl font-bold">{t("title")}</h1>
         <p className="mt-4 text-center text-lg">{t("description")}</p>
         <p className="mt-4 text-center text-sm text-gray-500">{t("headless")}</p>
-        <small className="mb-32 mt-4 block w-full text-center text-sm text-gray-500">
+        <small className="mt-4 block w-full text-center text-sm text-gray-500">
           {t("contribute.made")}{" "}
           <a href="https://twitter.com/pierregueroult1" className="underline" target="_blank" rel="noreferrer">
             {t("contribute.by")}
@@ -34,6 +35,7 @@ function Page(): ReactNode {
           </a>
           .
         </small>
+        <Languages />
       </section>
       <section className="mt-16 flex h-screen w-full flex-col items-center justify-center">
         <div>
