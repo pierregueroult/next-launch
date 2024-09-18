@@ -1,11 +1,22 @@
 import React, { ReactNode } from "react";
+import { getLocale, getMessages } from "next-intl/server";
+import { NextIntlClientProvider } from "next-intl";
+import { getLangDir } from "rtl-detect";
+
 import "@/styles/globals.css";
 
-function Layout({ children }: { children: ReactNode }) {
+async function Layout({ children }: { children: ReactNode }) {
+  const locale = await getLocale();
+  const direction = getLangDir(locale);
+
+  const messages = await getMessages();
   return (
-    <html lang="en" dir="ltr">
+    <html lang={locale} dir={direction}>
       <head />
-      <body>{children}</body>
+      <body>
+        {/* Feel free tomove this provider wherever you need messages (optimisation hehe) */}
+        <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+      </body>
     </html>
   );
 }

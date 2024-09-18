@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
 import { Metadata } from "next";
+import { useTranslations } from "next-intl";
 
 export const metadata: Metadata = {
   title: "Welcome to Next Launch ",
@@ -8,24 +9,20 @@ export const metadata: Metadata = {
 };
 
 function Page(): ReactNode {
+  const t = useTranslations("Welcome");
+
   return (
     <main>
       <section className="flex h-screen flex-col items-center justify-center">
-        <h1 className="mt-8 text-center text-3xl font-bold">Welcome to Next Launch 🚀!</h1>
-        <p className="mt-4 text-center text-lg">
-          A free and open source web app boilerplate based on Next.js, offering you an easy way to get started with your
-          next project.
-        </p>
-        <p className="mt-4 text-center text-sm text-gray-500">
-          This is a headless project, meaning that it doesn&apos;t include any styled UI, now you&apos;re the one who
-          decides how your app will look like. Scroll down to see the features.
-        </p>
+        <h1 className="mt-8 text-center text-3xl font-bold">{t("title")}</h1>
+        <p className="mt-4 text-center text-lg">{t("description")}</p>
+        <p className="mt-4 text-center text-sm text-gray-500">{t("headless")}</p>
         <small className="mb-32 mt-4 block w-full text-center text-sm text-gray-500">
-          Made with ❤️ by{" "}
+          {t("contribute.made")}{" "}
           <a href="https://twitter.com/pierregueroult1" className="underline" target="_blank" rel="noreferrer">
-            Pierre Guéroult
+            {t("contribute.by")}
           </a>
-          . Contribute on{" "}
+          {t("contribute.on")}{" "}
           <a
             href="https://github.com/pierregueroult/next-launch"
             className="underline"
@@ -33,7 +30,7 @@ function Page(): ReactNode {
             rel="noreferrer"
           >
             {" "}
-            GitHub
+            {t("contribute.github")}
           </a>
           .
         </small>
