@@ -1,3 +1,5 @@
+import "server-only";
+
 import prisma from "@/db";
 import { TwoFactorToken } from "@/db/types";
 
