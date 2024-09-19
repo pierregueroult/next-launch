@@ -1,9 +1,8 @@
+import "@/styles/globals.css";
 import React, { ReactNode } from "react";
 import { getLocale, getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import { getLangDir } from "rtl-detect";
-
-import "@/styles/globals.css";
 
 async function Layout({ children }: { children: ReactNode }) {
   const locale = await getLocale();

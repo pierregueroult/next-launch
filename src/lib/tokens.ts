@@ -1,11 +1,11 @@
+import { createTwoFactorToken, deleteTwoFactorTokenById, getTwoFactorTokenByEmail } from "@/services/two-factor-token";
 import {
   createVerificationToken,
   deleteVerificationTokenById,
   getVerificationTokenByEmail,
 } from "@/services/verification-token";
-import { createTwoFactorToken, deleteTwoFactorTokenById, getTwoFactorTokenByEmail } from "@/services/two-factor-token";
-import { v4 as uuid } from "uuid";
 import crypto from "crypto";
+import { v4 as uuid } from "uuid";
 
 export const generateVerificationToken = async (email: string) => {
   const token = uuid();

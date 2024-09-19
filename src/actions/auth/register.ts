@@ -1,10 +1,10 @@
 "use server";
 
-import bcrypt from "bcryptjs";
 import { RegisterSchema, registerSchema } from "@/schemas/auth/register";
 import { createUser, getUserByEmail } from "@/services/user";
-import send from "@/emails/send";
+import bcrypt from "bcryptjs";
 import { generateVerificationToken } from "@/lib/tokens";
+import send from "@/emails/send";
 import { verificationEmail } from "@/emails/templates/verification-email";
 
 const register = async (values: RegisterSchema) => {

@@ -1,5 +1,5 @@
-import React from "react";
 import { Body, Container, Heading, Link, Section, Text } from "@react-email/components";
+import React from "react";
 import { render } from "@react-email/render";
 
 type VerificationEmailProps = {

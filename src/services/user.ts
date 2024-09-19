@@ -1,7 +1,7 @@
 import "server-only";
 
-import prisma from "@/db";
 import { User } from "@/db/types";
+import prisma from "@/db";
 
 export const getUserByEmail = async (email: string): Promise<User | null> =>
   prisma.user.findUnique({
