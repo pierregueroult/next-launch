@@ -7,9 +7,9 @@ import locales from "@/lang/locales";
 import { useLocale } from "next-intl";
 
 export default function Languages() {
-  const currentLocale = useLocale();
+  const currentLocale: string = useLocale();
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     const lang: string = ((e.target as HTMLFormElement).elements.namedItem("locale") as HTMLInputElement).value;
     if (locales.includes(lang as Locale)) await changeLang(lang as Locale);
@@ -17,7 +17,7 @@ export default function Languages() {
 
   return (
     <ul className="mb-32 mt-4 flex flex-row items-center justify-center gap-4">
-      {locales.map((locale) => (
+      {locales.map((locale: Locale) => (
         <li key={locale}>
           <form onSubmit={(e) => handleSubmit(e)}>
             <button

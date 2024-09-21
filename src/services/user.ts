@@ -20,7 +20,7 @@ export const verifyUserEmailById = async (email: string, id: string): Promise<Us
   });
 
 export const createUser = async (name: string, email: string, password: string): Promise<User | null> => {
-  const user = await getUserByEmail(email);
+  const user: User | null = await getUserByEmail(email);
   if (user) return null;
 
   try {
