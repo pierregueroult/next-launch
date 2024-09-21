@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
+import Languages from "@/components/languages";
 import { Metadata } from "next";
 import { useTranslations } from "next-intl";
-import Languages from "@/components/languages";
 
 export const metadata: Metadata = {
   title: "Welcome to Next Launch ",

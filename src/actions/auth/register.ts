@@ -1,10 +1,11 @@
 "use server";
 
-import bcrypt from "bcryptjs";
 import { RegisterSchema, registerSchema } from "@/schemas/auth/register";
+import { User, VerificationToken } from "@/db/types";
 import { createUser, getUserByEmail } from "@/services/user";
-import send from "@/emails/send";
+import bcrypt from "bcryptjs";
 import { generateVerificationToken } from "@/lib/tokens";
+import send from "@/emails/send";
 import { verificationEmail } from "@/emails/templates/verification-email";
 
 const register = async (values: RegisterSchema) => {
@@ -13,14 +14,14 @@ const register = async (values: RegisterSchema) => {
 
   const { email, password, name } = fields.data;
 
-  const user = await getUserByEmail(email);
+  const user: User | null = await getUserByEmail(email);
   if (user) return { error: "Ce compte existe déjà" };
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword: string = await bcrypt.hash(password, 10);
 
   await createUser(name, email, hashedPassword);
 
-  const token = await generateVerificationToken(email);
+  const token: VerificationToken = await generateVerificationToken(email);
 
   await send({
     to: email,

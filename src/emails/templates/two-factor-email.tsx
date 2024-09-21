@@ -1,6 +1,5 @@
-import React from "react";
-
 import { Body, Container, Section, Text } from "@react-email/components";
+import React from "react";
 import { render } from "@react-email/render";
 
 type TwoFactorEmailProps = {

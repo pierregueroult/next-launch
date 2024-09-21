@@ -1,13 +1,13 @@
-import NextAuth from "next-auth";
-import { PrismaAdapter } from "@auth/prisma-adapter";
+import { Account, TwoFactorConfirmation, User, UserRole } from "@/db/types";
+import { deleteTwoFactorConfirmationById, getTwoFactorConfirmationByUserId } from "@/services/two-factor-confirmation";
 import { getUserByEmail, getUserById, verifyUserEmailById } from "@/services/user";
 import Credentials from "next-auth/providers/credentials";
-import { getAccountByUserId } from "@/services/account";
-import { deleteTwoFactorConfirmationById, getTwoFactorConfirmationByUserId } from "@/services/two-factor-confirmation";
+import NextAuth from "next-auth";
+import { PrismaAdapter } from "@auth/prisma-adapter";
 import bcrypt from "bcryptjs";
-import { UserRole } from "@/db/types";
-import prisma from "@/db";
+import { getAccountByUserId } from "@/services/account";
 import { loginSchema } from "@/schemas/auth/login";
+import prisma from "@/db";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   events: {
@@ -22,11 +22,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (account?.provider !== "credentials") return true;
 
       if (!user.id) return false;
-      const userData = await getUserById(user.id);
+      const userData: User | null = await getUserById(user.id);
       if (!userData?.emailVerified) return false;
 
       if (!userData.isTwoFactorEnabled) {
-        const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(user.id);
+        const twoFactorConfirmation: TwoFactorConfirmation | null = await getTwoFactorConfirmationByUserId(user.id);
         if (!twoFactorConfirmation) return false;
         await deleteTwoFactorConfirmationById(twoFactorConfirmation.id);
       }
@@ -54,10 +54,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ token }) {
       if (!token.sub) return token;
 
-      const user = await getUserById(token.sub);
+      const user: User | null = await getUserById(token.sub);
       if (!user) return token;
 
-      const account = await getAccountByUserId(user.id);
+      const account: Account | null = await getAccountByUserId(user.id);
 
       return {
         ...token,
@@ -78,10 +78,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (!fields.success) return null;
 
         const { email, password } = fields.data;
-        const user = await getUserByEmail(email);
+        const user: User | null = await getUserByEmail(email);
         if (!user) return null;
 
-        const passwordMatch = await bcrypt.compare(password, user.password);
+        const passwordMatch: boolean = await bcrypt.compare(password, user.password);
         if (!passwordMatch) return null;
 
         return user;

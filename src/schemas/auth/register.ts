@@ -1,9 +1,9 @@
 import { z } from "zod";
 
-const uppercaseRegex = /[A-Z]/;
-const lowercaseRegex = /[a-z]/;
-const numberRegex = /\d/;
-const symbolRegex = /[`!@#$%^&*()_\-+=[\]{};':"\\|,.<>/?~ ]/;
+const uppercaseRegex: RegExp = /[A-Z]/;
+const lowercaseRegex: RegExp = /[a-z]/;
+const numberRegex: RegExp = /\d/;
+const symbolRegex: RegExp = /[`!@#$%^&*()_\-+=[\]{};':"\\|,.<>/?~ ]/;
 
 export const registerSchema = z.object({
   email: z.string().email({

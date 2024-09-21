@@ -1,7 +1,7 @@
 import "server-only";
 
-import prisma from "@/db";
 import { VerificationToken } from "@/db/types";
+import prisma from "@/db";
 
 export const getVerificationTokenByToken = async (token: string): Promise<VerificationToken | null> => {
   try {

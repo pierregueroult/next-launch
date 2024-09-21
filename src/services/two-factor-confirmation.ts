@@ -1,7 +1,7 @@
 import "server-only";
 
-import prisma from "@/db";
 import { TwoFactorConfirmation } from "@/db/types";
+import prisma from "@/db";
 
 export const getTwoFactorConfirmationByUserId = async (userId: string): Promise<TwoFactorConfirmation | null> =>
   prisma.twoFactorConfirmation.findUnique({
