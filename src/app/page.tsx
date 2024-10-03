@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import Languages from "@/components/languages";
+import Languages from "@/components/languages/languages";
 import { Metadata } from "next";
 import { useTranslations } from "next-intl";
 
