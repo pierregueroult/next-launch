@@ -1,8 +1,9 @@
+import "server-only";
+import { cache } from "react";
 import prisma from "@/db";
 import { VerificationToken } from "@/db/types";
-import "server-only";
 
-export const getVerificationTokenByToken = async (token: string): Promise<VerificationToken | null> => {
+async function getVerificationTokenByToken(token: string): Promise<VerificationToken | null> {
   try {
     return await prisma.verificationToken.findUnique({
       where: { token },
@@ -10,9 +11,9 @@ export const getVerificationTokenByToken = async (token: string): Promise<Verifi
   } catch {
     return null;
   }
-};
+}
 
-export const getVerificationTokenByEmail = async (email: string): Promise<VerificationToken | null> => {
+async function getVerificationTokenByEmail(email: string): Promise<VerificationToken | null> {
   try {
     return await prisma.verificationToken.findFirst({
       where: { email },
@@ -20,9 +21,9 @@ export const getVerificationTokenByEmail = async (email: string): Promise<Verifi
   } catch {
     return null;
   }
-};
+}
 
-export const deleteVerificationTokenById = async (id: string): Promise<void> => {
+async function deleteVerificationTokenById(id: string): Promise<void> {
   try {
     await prisma.verificationToken.delete({
       where: { id },
@@ -30,17 +31,26 @@ export const deleteVerificationTokenById = async (id: string): Promise<void> => 
   } catch {
     /* empty */
   }
-};
+}
 
-export const createVerificationToken = async (
-  email: string,
-  token: string,
-  expires: Date,
-): Promise<VerificationToken> =>
-  prisma.verificationToken.create({
+async function createVerificationToken(email: string, token: string, expires: Date): Promise<VerificationToken> {
+  return prisma.verificationToken.create({
     data: {
       email,
       token,
       expires,
     },
   });
+}
+
+const cachedGetVerificationTokenByToken = cache(getVerificationTokenByToken);
+const cachedGetVerificationTokenByEmail = cache(getVerificationTokenByEmail);
+
+export {
+  getVerificationTokenByToken,
+  getVerificationTokenByEmail,
+  deleteVerificationTokenById,
+  createVerificationToken,
+  cachedGetVerificationTokenByToken,
+  cachedGetVerificationTokenByEmail,
+};
