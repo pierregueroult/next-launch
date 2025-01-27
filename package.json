@@ -33,7 +33,7 @@
     "express": "^4.19.2",
     "next": "15.1.6",
     "next-auth": "5.0.0-beta.19",
-    "next-intl": "^3.19.3",
+    "next-intl": "^3.26.3",
     "nodemailer": "^6.9.13",
     "react": "19.0.0",
     "react-dom": "19.0.0",
