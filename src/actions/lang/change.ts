@@ -7,7 +7,7 @@ import { Locale } from "@/types/lang";
 async function changeLang(lang: Locale): Promise<void> {
   const locale = localeSchema.safeParse(lang);
   if (!locale.success) return;
-  cookies().set({ name: "locale", value: locale.data, secure: true });
+  (await cookies()).set({ name: "locale", value: locale.data, secure: true });
 }
 
 export default changeLang;

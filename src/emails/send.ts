@@ -4,7 +4,7 @@ import transporter from "@/emails/transporter";
 import { MailOptions } from "nodemailer/lib/sendmail-transport";
 
 type Send = Omit<MailOptions, "html"> & {
-  template: ReactElement | string;
+  template: ReactElement<any> | string;
 };
 
 const send = async ({ template, ...options }: Send): Promise<void> => {
