@@ -1,7 +1,6 @@
-import "server-only";
-
-import { TwoFactorToken } from "@/db/types";
 import prisma from "@/db";
+import { TwoFactorToken } from "@/db/types";
+import "server-only";
 
 export const getTwoFactorTokenByToken = async (token: string): Promise<TwoFactorToken | null> =>
   prisma.twoFactorToken.findUnique({

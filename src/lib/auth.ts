@@ -1,13 +1,13 @@
+import NextAuth from "next-auth";
+import Credentials from "next-auth/providers/credentials";
+import prisma from "@/db";
 import { Account, TwoFactorConfirmation, User, UserRole } from "@/db/types";
+import { loginSchema } from "@/schemas/auth/login";
+import { getAccountByUserId } from "@/services/account";
 import { deleteTwoFactorConfirmationById, getTwoFactorConfirmationByUserId } from "@/services/two-factor-confirmation";
 import { getUserByEmail, getUserById, verifyUserEmailById } from "@/services/user";
-import Credentials from "next-auth/providers/credentials";
-import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import bcrypt from "bcryptjs";
-import { getAccountByUserId } from "@/services/account";
-import { loginSchema } from "@/schemas/auth/login";
-import prisma from "@/db";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   events: {
