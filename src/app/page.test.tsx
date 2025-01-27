@@ -1,10 +1,10 @@
-import "@testing-library/jest-dom";
+import { render } from "@testing-library/react";
+import React from "react";
 import { NextIntlClientProvider } from "next-intl";
 import Page from "@/app/page";
-import React from "react";
 import messages from "@/lang/messages/en.json";
 import pick from "@/lib/pick";
-import { render } from "@testing-library/react";
+import "@testing-library/jest-dom";
 
 describe("Page", (): void => {
   jest.mock("next-intl", () => ({

@@ -1,10 +1,10 @@
 "use client";
 
 import React, { FormEvent } from "react";
-import { Locale } from "@/types/lang";
+import { useLocale } from "next-intl";
 import changeLang from "@/actions/lang/change";
 import locales from "@/lang/locales";
-import { useLocale } from "next-intl";
+import { Locale } from "@/types/lang";
 
 export default function Languages() {
   const currentLocale: string = useLocale();

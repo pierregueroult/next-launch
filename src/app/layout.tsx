@@ -1,8 +1,7 @@
-import "@/styles/globals.css";
-
-import { AbstractIntlMessages, NextIntlClientProvider } from "next-intl";
 import React, { ReactNode } from "react";
+import { AbstractIntlMessages, NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
+import "@/styles/globals.css";
 import { getLangDir } from "rtl-detect";
 
 async function Layout({ children }: { children: ReactNode }): Promise<ReactNode> {

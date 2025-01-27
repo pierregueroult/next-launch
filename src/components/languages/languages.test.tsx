@@ -1,9 +1,9 @@
-import "@testing-library/jest-dom";
-import Languages from "@/components/languages/languages";
-import { NextIntlClientProvider } from "next-intl";
-import React from "react";
-import locales from "@/lang/locales";
 import { render } from "@testing-library/react";
+import React from "react";
+import { NextIntlClientProvider } from "next-intl";
+import Languages from "@/components/languages/languages";
+import locales from "@/lang/locales";
+import "@testing-library/jest-dom";
 
 describe("Languages", (): void => {
   jest.mock("next-intl", () => ({

@@ -1,16 +1,16 @@
 "use server";
 
-import { LoginSchema, loginSchema } from "@/schemas/auth/login";
-import { deleteTwoFactorTokenById, getTwoFactorTokenByEmail } from "@/services/two-factor-token";
-import { generateTwoFactorToken, generateVerificationToken } from "@/lib/tokens";
 import { AuthError } from "next-auth";
-import bcrypt from "bcryptjs";
-import { createTwoFactorConfirmation } from "@/services/two-factor-confirmation";
-import { getUserByEmail } from "@/services/user";
 import send from "@/emails/send";
-import { signIn } from "@/lib/auth";
 import { twoFactorEmail } from "@/emails/templates/two-factor-email";
 import { verificationEmail } from "@/emails/templates/verification-email";
+import { signIn } from "@/lib/auth";
+import { generateTwoFactorToken, generateVerificationToken } from "@/lib/tokens";
+import { LoginSchema, loginSchema } from "@/schemas/auth/login";
+import { createTwoFactorConfirmation } from "@/services/two-factor-confirmation";
+import { deleteTwoFactorTokenById, getTwoFactorTokenByEmail } from "@/services/two-factor-token";
+import { getUserByEmail } from "@/services/user";
+import bcrypt from "bcryptjs";
 
 const login = async (values: LoginSchema, callbackUrl?: string) => {
   const fields = loginSchema.safeParse(values);
