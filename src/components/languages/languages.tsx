@@ -16,7 +16,7 @@ export default function Languages() {
   };
 
   return (
-    <ul className="mb-32 mt-4 flex flex-row items-center justify-center gap-4">
+    <ul className="mt-4 mb-32 flex flex-row items-center justify-center gap-4">
       {locales.map((locale: Locale) => (
         <li key={locale}>
           <form onSubmit={(e) => handleSubmit(e)}>
