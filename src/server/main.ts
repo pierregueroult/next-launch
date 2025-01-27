@@ -1,5 +1,5 @@
-const express = require("express");
-const next = require("next");
+import next from "next";
+import express from "express";
 
 const dev: boolean = process.env.NODE_ENV === "development";
 const hostname: string = process.env.HOST_NAME || "localhost";
@@ -13,7 +13,7 @@ app
   .then(() => {
     const server = express();
 
-    server.all("*", (req: Request, res: Response) => handle(req, res));
+    server.all("*", (req, res) => handle(req, res));
     server.listen(port, () => {
       // eslint-disable-next-line no-console
       console.log(
