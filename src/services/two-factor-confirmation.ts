@@ -1,13 +1,15 @@
+import { cache } from "react";
 import prisma from "@/db";
 import { TwoFactorConfirmation } from "@/db/types";
 import "server-only";
 
-export const getTwoFactorConfirmationByUserId = async (userId: string): Promise<TwoFactorConfirmation | null> =>
-  prisma.twoFactorConfirmation.findUnique({
+async function getTwoFactorConfirmationByUserId(userId: string): Promise<TwoFactorConfirmation | null> {
+  return prisma.twoFactorConfirmation.findUnique({
     where: { userId },
   });
+}
 
-export const deleteTwoFactorConfirmationById = async (id: string): Promise<void> => {
+async function deleteTwoFactorConfirmationById(id: string): Promise<void> {
   try {
     await prisma.twoFactorConfirmation.delete({
       where: { id },
@@ -15,9 +17,9 @@ export const deleteTwoFactorConfirmationById = async (id: string): Promise<void>
   } catch {
     /* empty */
   }
-};
+}
 
-export const createTwoFactorConfirmation = async (userId: string): Promise<TwoFactorConfirmation> => {
+async function createTwoFactorConfirmation(userId: string): Promise<TwoFactorConfirmation> {
   try {
     await prisma.twoFactorConfirmation.delete({ where: { userId } });
   } catch {
@@ -29,4 +31,13 @@ export const createTwoFactorConfirmation = async (userId: string): Promise<TwoFa
       userId,
     },
   });
+}
+
+const cachedGetTwoFactorConfirmationByUserId = cache(getTwoFactorConfirmationByUserId);
+
+export {
+  getTwoFactorConfirmationByUserId,
+  deleteTwoFactorConfirmationById,
+  createTwoFactorConfirmation,
+  cachedGetTwoFactorConfirmationByUserId,
 };
