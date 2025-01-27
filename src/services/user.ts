@@ -1,7 +1,7 @@
+import "server-only";
 import { cache } from "react";
 import prisma from "@/db";
 import { User } from "@/db/types";
-import "server-only";
 
 async function getUserByEmail(email: string): Promise<User | null> {
   return prisma.user.findUnique({

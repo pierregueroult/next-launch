@@ -1,7 +1,7 @@
+import "server-only";
 import { cache } from "react";
 import prisma from "@/db";
 import { VerificationToken } from "@/db/types";
-import "server-only";
 
 async function getVerificationTokenByToken(token: string): Promise<VerificationToken | null> {
   try {
