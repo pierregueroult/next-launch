@@ -6,15 +6,15 @@ import prettier from "eslint-plugin-prettier";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const filename = fileURLToPath(import.meta.url);
+const dirName = path.dirname(filename);
 const compat = new FlatCompat({
-  baseDirectory: __dirname,
+  baseDirectory: filename,
   recommendedConfig: js.configs.recommended,
   allConfig: js.configs.all,
 });
 
-export default [
+const config = [
   ...compat.extends("next/core-web-vitals", "airbnb", "airbnb-typescript", "prettier"),
   {
     plugins: {
@@ -28,7 +28,7 @@ export default [
       parser: tsParser,
       parserOptions: {
         project: true,
-        tsconfigRootDir: __dirname,
+        tsconfigRootDir: dirName,
       },
     },
     rules: {
@@ -72,9 +72,12 @@ export default [
             "**/*.spec.js",
             "**/*.spec.jsx",
             "commitlint.config.ts",
+            "eslint.config.mjs",
           ],
         },
       ],
     },
   },
 ];
+
+export default config;
