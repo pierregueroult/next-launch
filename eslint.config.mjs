@@ -59,6 +59,22 @@ export default [
           tsx: "never",
         },
       ],
+      "import/no-extraneous-dependencies": [
+        "error",
+        {
+          devDependencies: [
+            "**/*.test.ts",
+            "**/*.test.tsx",
+            "**/*.test.js",
+            "**/*.test.jsx",
+            "**/*.spec.ts",
+            "**/*.spec.tsx",
+            "**/*.spec.js",
+            "**/*.spec.jsx",
+            "commitlint.config.ts",
+          ],
+        },
+      ],
     },
   },
 ];
