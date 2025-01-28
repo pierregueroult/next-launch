@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development ts-node src/server/main.ts",
+    "dev": "cross-env NODE_ENV=development tsx src/server/main.ts",
     "build": "next build",
-    "start": "cross-env NODE_ENV=production ts-node src/server/main.ts",
+    "start": "cross-env NODE_ENV=production tsx src/server/main.ts",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "format": "prettier --write . --config prettier.config.mjs",
