@@ -8,7 +8,6 @@ export type ExtendedUser = DefaultSession["user"] & {
 };
 
 declare module "next-auth" {
-  // eslint-disable-next-line no-unused-vars
   interface Session {
     user: ExtendedUser;
   }

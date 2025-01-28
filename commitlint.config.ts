@@ -20,6 +20,7 @@ const config: UserConfig = {
         "important",
         "breaking",
         "chore",
+        "merge",
       ],
     ],
     "type-case": [RuleConfigSeverity.Disabled, "always", "lower-case"],
