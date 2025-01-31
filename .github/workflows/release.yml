@@ -1,0 +1,71 @@
+name: 🆕 Release Workflow
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Extract current release version
+        id: get_version
+        run: |
+          TAG_VERSION="${GITHUB_REF#refs/tags/v}"
+          echo "The current release version is $TAG_VERSION"
+          echo "VERSION=$TAG_VERSION" >> $GITHUB_ENV
+
+      - name: Fetch current version from npm registry
+        id: npm_verion
+        run: |
+          PUBLISHED_VERSION=$(npm show ${{ github.repository }} version)
+          echo "The current version on npm is $PUBLISHED_VERSION"
+          echo "PUBLISHED_VERSION=$PUBLISHED_VERSION" >> $GITHUB_ENV
+
+      - name: Check if the current version is already published
+        run: |
+          if [ "$PUBLISHED_VERSION" == "$VERSION" ]; then
+            echo "The current version is already published on npm"
+            exit 1
+          fi
+
+      - name: Check if the current version is ahead of the published version
+        run: |
+          if [ "$(semver $VERSION -gt $PUBLISHED_VERSION)" != "true" ]; then
+            echo "Version $VERSION is not higher than the published version $PUBLISHED_VERSION"
+            exit 1
+          fi
+
+      - name: Update package.json version
+        run: |
+          npm version $VERSION --no-git-tag-version
+
+      - name: Commit change to package.json
+        run: |
+          git config --global user.name "Github Actions"
+          git config --global user.email "actions@github.com"
+          git add package.json
+          git commit -m "chore(release): update package.json version to $VERSION"
+          git push origin HEAD:releases
+
+      - name: Publish package to npm registry
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
+      - name: Merge release branch to development
+        run: |
+          git fetch origin
+          git checkout development
+          git merge releases
+          git push origin HEAD:development
