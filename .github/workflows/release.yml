@@ -3,6 +3,7 @@ name: 🆕 Release Workflow
 on:
   release:
     types: [published]
+  workflow_dispatch:
 
 jobs:
   release:
