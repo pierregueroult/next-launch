@@ -51,8 +51,8 @@ jobs:
 
       - name: Check if the current version is ahead of the published version
         run: |
-          if [ "$(semver $VERSION -gt $PUBLISHED_VERSION)" != "true" ]; then
-            echo "Version $VERSION is not higher than the published version $PUBLISHED_VERSION"
+          if ! npx semver "$VERSION" -r ">$PUBLISHED_VERSION"; then
+            echo "🚨 Version $VERSION is not higher than the published version $PUBLISHED_VERSION"
             exit 1
           fi
 
