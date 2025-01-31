@@ -1,6 +1,6 @@
 {
   "name": "next-launch",
-  "version": "0.3.0",
+  "version": "1.0.1",
   "private": false,
   "scripts": {
     "dev": "cross-env NODE_ENV=development tsx src/server/main.ts",
