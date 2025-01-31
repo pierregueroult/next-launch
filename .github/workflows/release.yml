@@ -85,7 +85,7 @@ jobs:
           git add package.json
           git commit -m "chore(release): update package.json version to $VERSION"
           git remote set-url origin https://x-access-token:${GH_TAB}@github.com/${{ github.repository }}.git
-          git push origin HEAD:releases
+          git push --force origin HEAD:releases
 
       - name: Publish package to npm registry
         run: npm publish
@@ -101,4 +101,4 @@ jobs:
           git pull origin development
           git merge releases
           git remote set-url origin https://x-access-token:${GH_TAB}@github.com/${{ github.repository }}.git
-          git push origin HEAD:development
+          git push --force origin HEAD:development
