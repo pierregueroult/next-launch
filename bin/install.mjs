@@ -38,7 +38,7 @@ try {
 
   process.chdir(projectPath);
 
-  await exec("npm install");
+  await exec("npm install --quiet --legacy-peer-deps");
 
   console.log("The installation is done!");
   console.log("You can now run your app with:");
