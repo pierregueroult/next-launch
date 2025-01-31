@@ -1,6 +1,6 @@
 {
   "name": "next-launch",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "private": false,
   "scripts": {
     "dev": "cross-env NODE_ENV=development tsx src/server/main.ts",
@@ -100,6 +100,6 @@
     }
   },
   "bin": {
-    "next-launch": "./bin/install.mjs"
+    "next-launch": "bin/install.mjs"
   }
 }
