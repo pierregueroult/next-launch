@@ -1,7 +1,7 @@
 {
   "name": "next-launch",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "scripts": {
     "dev": "cross-env NODE_ENV=development tsx src/server/main.ts",
     "build": "next build",
@@ -98,5 +98,8 @@
       "@types/react": "19.0.8",
       "@types/react-dom": "19.0.3"
     }
+  },
+  "bin": {
+    "next-launch": "./bin/create-next-launch"
   }
 }

@@ -1,0 +1,26 @@
+#!/usr/bin/env node
+const { execSync } = require("child_process");
+const fs = require("fs");
+const path = require("path");
+
+const repoUrl = "https://github.com/tondepot/next-launch.git"; // Remplace par l'URL de ton dépôt
+const branch = "releases"; // Branche à cloner
+const projectName = process.argv[2]; // Nom du projet passé en argument
+
+if (!projectName) {
+  console.log("Erreur : vous devez spécifier un nom de projet.");
+  process.exit(1);
+}
+
+// Vérifie si le dossier existe déjà
+const targetPath = path.resolve(process.cwd(), projectName);
+if (fs.existsSync(targetPath)) {
+  console.log(`Le dossier ${projectName} existe déjà.`);
+  process.exit(1);
+}
+
+// Cloner la branche "production" du dépôt Git
+console.log(`Clonage du dépôt ${repoUrl} dans ${projectName}...`);
+execSync(`git clone -b ${branch} ${repoUrl} ${projectName}`, { stdio: "inherit" });
+
+console.log(`Le projet ${projectName} a été cloné avec succès.`);
