@@ -19,6 +19,10 @@ jobs:
           node-version: "22"
           registry-url: "https://registry.npmjs.org"
 
+      - name: Install semver to compare
+        run: |
+          npm install -g semver
+
       - name: Extract current release version
         id: get_version
         run: |
