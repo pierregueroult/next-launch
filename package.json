@@ -100,6 +100,6 @@
     }
   },
   "bin": {
-    "next-launch": "./bin/create-next-launch"
+    "next-launch": "./bin/install.mjs"
   }
 }
