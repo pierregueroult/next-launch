@@ -1,0 +1,86 @@
+name: 🆕 Release Workflow
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Ensure releases branch exists
+        run: |
+          git fetch --all
+          if ! git show-ref --verify --quiet refs/remotes/origin/releases; then
+            echo "🚨 Branch 'releases' does not exist. Exiting ..."
+            exit 1
+          else
+            git checkout releases
+            git pull origin releases
+          fi
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install semver to compare
+        run: |
+          npm install -g semver
+
+      - name: Extract current release version
+        id: get_version
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            TAG_VERSION="${GITHUB_REF#refs/tags/v}"
+            echo "The current release version is $TAG_VERSION"
+            echo "VERSION=$TAG_VERSION" >> $GITHUB_ENV
+          else
+            echo "This workflow did not run on a tag. Exiting..."
+            exit 1
+          fi
+
+      - name: Check that the package.json version matches the tag
+        run: |
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          if [ "$PACKAGE_VERSION" != "$VERSION" ]; then
+            echo "🚨 The package.json version does not match the tag version"
+            exit 1
+          fi
+
+      - name: Fetch current version from npm registry
+        id: npm_verion
+        run: |
+          PUBLISHED_VERSION=$(npm show ${{ github.repository }} version)
+          echo "The current version on npm is $PUBLISHED_VERSION"
+          echo "PUBLISHED_VERSION=$PUBLISHED_VERSION" >> $GITHUB_ENV
+
+      - name: Check if the current version is already published
+        run: |
+          if [ "$PUBLISHED_VERSION" == "$VERSION" ]; then
+            echo "The current version is already published on npm"
+            exit 1
+          fi
+
+      - name: Check if the current version is ahead of the published version
+        run: |
+          if ! npx semver "$VERSION" -r ">$PUBLISHED_VERSION"; then
+            echo "🚨 Version $VERSION is not higher than the published version $PUBLISHED_VERSION"
+            exit 1
+          fi
+
+      - name: Publish package to npm registry
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}

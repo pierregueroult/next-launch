@@ -1,7 +1,7 @@
 {
   "name": "next-launch",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.1",
+  "private": false,
   "scripts": {
     "dev": "cross-env NODE_ENV=development tsx src/server/main.ts",
     "build": "next build",
@@ -20,27 +20,31 @@
     "db:push": "prisma db push --schema src/db/schema.prisma",
     "db:studio": "prisma studio --schema src/db/schema.prisma",
     "email:dev": "maildev -outgoing-host smtp.nextlaunch.com -outgoing-secure --outgoing-user 'myuser' --outgoing-pass 'mypass'",
-    "postinstall": "prisma generate --schema src/db/schema.prisma",
+    "postinstall": "npx prisma generate --schema src/db/schema.prisma",
     "test": "jest",
     "test:watch": "jest --watch"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.4.1",
     "@prisma/client": "^6.2.1",
-    "@react-email/components": "^0.0.19",
-    "@react-email/render": "^0.0.15",
+    "@react-email/components": "^0.0.32",
+    "@react-email/render": "^1.0.4",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
+    "chalk": "^5.4.1",
     "express": "^4.19.2",
     "next": "15.1.6",
-    "next-auth": "5.0.0-beta.19",
+    "next-auth": "^5.0.0-beta.25",
     "next-intl": "^3.26.3",
     "nodemailer": "^6.10.0",
+    "ora": "^8.1.1",
+    "prisma": "^6.3.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
-    "react-email": "2.1.4",
+    "react-email": "^3.0.6",
     "rtl-detect": "^1.1.2",
     "server-only": "^0.0.1",
+    "simple-git": "^3.27.0",
     "tsx": "^4.19.2",
     "uuid": "^10.0.0",
     "zod": "^3.23.8"
@@ -89,7 +93,6 @@
     "postcss": "^8.4.38",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.11",
-    "prisma": "^6.2.1",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.4.5"
   },
@@ -98,5 +101,8 @@
       "@types/react": "19.0.8",
       "@types/react-dom": "19.0.3"
     }
+  },
+  "bin": {
+    "create-next-launch": "bin/install.mjs"
   }
 }
