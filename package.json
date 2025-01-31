@@ -1,6 +1,6 @@
 {
   "name": "next-launch",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "private": false,
   "scripts": {
     "dev": "cross-env NODE_ENV=development tsx src/server/main.ts",
@@ -36,6 +36,7 @@
     "next-auth": "5.0.0-beta.19",
     "next-intl": "^3.26.3",
     "nodemailer": "^6.10.0",
+    "prisma": "^6.3.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-email": "2.1.4",
@@ -89,7 +90,6 @@
     "postcss": "^8.4.38",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.11",
-    "prisma": "^6.2.1",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.4.5"
   },
