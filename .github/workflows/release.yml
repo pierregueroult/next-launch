@@ -51,6 +51,14 @@ jobs:
             exit 1
           fi
 
+      - name: Check that the package.json version matches the tag
+        run: |
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          if [ "$PACKAGE_VERSION" != "$VERSION" ]; then
+            echo "🚨 The package.json version does not match the tag version"
+            exit 1
+          fi
+
       - name: Fetch current version from npm registry
         id: npm_verion
         run: |
@@ -72,33 +80,7 @@ jobs:
             exit 1
           fi
 
-      - name: Update package.json version
-        run: |
-          npm version $VERSION --no-git-tag-version
-
-      - name: Commit change to package.json
-        env:
-          GH_TAB: ${{ secrets.GH_TAB }}
-        run: |
-          git config --global user.name "Github Actions"
-          git config --global user.email "actions@github.com"
-          git add package.json
-          git commit -m "chore(release): update package.json version to $VERSION"
-          git remote set-url origin https://x-access-token:${GH_TAB}@github.com/${{ github.repository }}.git
-          git push --force origin HEAD:releases
-
       - name: Publish package to npm registry
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-
-      - name: Merge release branch to development
-        env:
-          GH_TAB: ${{ secrets.GH_TAB }}
-        run: |
-          git fetch origin
-          git checkout development
-          git pull origin development
-          git merge releases
-          git remote set-url origin https://x-access-token:${GH_TAB}@github.com/${{ github.repository }}.git
-          git push --force origin HEAD:development
