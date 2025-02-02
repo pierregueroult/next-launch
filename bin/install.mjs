@@ -23,7 +23,7 @@ console.log(
 if (process.argv.length < 3) {
   console.log(chalk.white("You better give a name to your project, pretty sure it's dope!"));
   console.log(chalk.gray("For example :"));
-  console.log(`    ${chalk.gray("npx next-launcher i-love-next-launch-project <3")}`);
+  console.log(`    ${chalk.gray("npx next-launch i-love-next-launch-project <3")}`);
   process.exit(1);
 }
 
