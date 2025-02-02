@@ -80,6 +80,9 @@ jobs:
             exit 1
           fi
 
+      - name: Install node dependencies
+        run: npm install --legacy-peer-deps --no-audit --no-fund --no-optional --no-package-lock
+
       - name: Publish package to npm registry
         run: npm publish
         env:
