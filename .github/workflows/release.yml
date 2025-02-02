@@ -62,7 +62,7 @@ jobs:
       - name: Fetch current version from npm registry
         id: npm_verion
         run: |
-          PUBLISHED_VERSION=$(npm show ${{ github.repository }} version)
+          PUBLISHED_VERSION=$(npm show next-launch version)
           echo "The current version on npm is $PUBLISHED_VERSION"
           echo "PUBLISHED_VERSION=$PUBLISHED_VERSION" >> $GITHUB_ENV
 
