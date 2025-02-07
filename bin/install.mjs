@@ -56,8 +56,14 @@ process.chdir(projectPath);
 const cleaning = ora("▶ Cleaning install files ...").start();
 
 await Promise.all([
+  // Remove our git history
   fs.promises.rm(path.join(projectPath, ".git"), { recursive: true, force: true }),
+  // Remove the bin folder that contains the install script
   fs.promises.rm(path.join(projectPath, "bin"), { recursive: true, force: true }),
+  // Remove our sonarqube build and analysis action
+  fs.promises.rm(path.join(projectPath, ".github/workflows/build.yml"), { force: true }),
+  // Remove our sonarqube configuration
+  fs.promises.rm(path.join(projectPath, "sonar-project.properties"), { force: true }),
 ]);
 
 cleaning.succeed(chalk.green("🧹 Install files cleaned"));
