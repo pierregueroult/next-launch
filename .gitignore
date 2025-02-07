@@ -40,3 +40,7 @@ next-env.d.ts
 
 # IDE files
 /.idea
+
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
