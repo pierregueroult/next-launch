@@ -4,7 +4,9 @@ import { getLocale, getMessages } from "next-intl/server";
 import "@/styles/globals.css";
 import { getLangDir } from "rtl-detect";
 
-async function Layout({ children }: { children: ReactNode }): Promise<ReactNode> {
+type AppLayoutProps = Readonly<{ children: ReactNode }>;
+
+async function Layout({ children }: AppLayoutProps): Promise<ReactNode> {
   const locale: string = await getLocale();
   const direction: "ltr" | "rtl" = getLangDir(locale);
   const messages: AbstractIntlMessages = await getMessages();
