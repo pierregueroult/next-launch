@@ -3,5 +3,13 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
-  "editor.detectIndentation": false
+  "editor.detectIndentation": false,
+  "i18n-ally.localesPaths": [
+    "src/lang",
+    "src/actions/lang",
+    "src/components/languages",
+    "src/lang/messages",
+    "src/schemas/lang"
+  ],
+  "i18n-ally.sourceLanguage": "en"
 }
