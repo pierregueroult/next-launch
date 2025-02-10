@@ -68,18 +68,16 @@ const login = async (values: LoginSchema, callbackUrl?: string) => {
     await signIn("credentials", {
       email,
       password,
-      redirectTo: callbackUrl || "/",
+      redirectTo: callbackUrl ?? "/",
     });
 
     return { success: "Connexion réussie" };
   } catch (error) {
     if (error instanceof AuthError) {
-      switch (error.type) {
-        case "CredentialsSignin":
-          return { error: "Les entrées sont invalides" };
-        default:
-          return { error: "Une erreur est survenue lors de la connexion" };
+      if (error.type === "CredentialsSignin") {
+        return { error: "Les entrées sont invalides" };
       }
+      return { error: "Une erreur est survenue lors de la connexion" };
     }
     throw error;
   }
