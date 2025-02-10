@@ -26,7 +26,7 @@ const register = async (values: RegisterSchema) => {
   await send({
     to: email,
     subject: "Verify your email",
-    template: verificationEmail({ email: token.email, token: token.token }),
+    template: await verificationEmail({ email: token.email, token: token.token }),
   });
 
   return { success: "Un email de vérification vous a été envoyé" };

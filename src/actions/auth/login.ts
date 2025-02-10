@@ -26,7 +26,7 @@ const login = async (values: LoginSchema, callbackUrl?: string) => {
     await send({
       to: email,
       subject: "Verify your email",
-      template: verificationEmail({ email: verificationToken.email, token: verificationToken.token }),
+      template: await verificationEmail({ email: verificationToken.email, token: verificationToken.token }),
     });
     return { success: "Un email de vérification vous a été envoyé" };
   }
@@ -54,7 +54,7 @@ const login = async (values: LoginSchema, callbackUrl?: string) => {
       await send({
         to: email,
         subject: "Two-factor authentication",
-        template: twoFactorEmail({
+        template: await twoFactorEmail({
           email: twoFactorToken.email,
           token: twoFactorToken.token,
           expires: twoFactorToken.expires,
