@@ -2,11 +2,11 @@ import { Body, Container, Section, Text } from "@react-email/components";
 import { render } from "@react-email/render";
 import React from "react";
 
-type TwoFactorEmailProps = {
+type TwoFactorEmailProps = Readonly<{
   email: string;
   token: string;
   expires: Date;
-};
+}>;
 
 export function TwoFactorEmail({ email, token, expires }: TwoFactorEmailProps) {
   return (
@@ -22,5 +22,6 @@ export function TwoFactorEmail({ email, token, expires }: TwoFactorEmailProps) {
   );
 }
 
-// eslint-disable-next-line react/jsx-props-no-spreading
-export const twoFactorEmail = (props: TwoFactorEmailProps): string => render(<TwoFactorEmail {...props} />);
+export async function twoFactorEmail({ email, token, expires }: TwoFactorEmailProps): Promise<string> {
+  return render(<TwoFactorEmail email={email} token={token} expires={expires} />);
+}

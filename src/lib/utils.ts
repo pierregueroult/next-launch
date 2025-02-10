@@ -5,7 +5,7 @@ import { getUserByEmail } from "@/services/user";
 
 const isAdmin = async (): Promise<boolean> => {
   const session: Session | null = await auth();
-  if (!session || !session.user || !session.user.email) return false;
+  if (!session?.user?.email) return false;
   const user: User | null = await getUserByEmail(session.user.email);
   return !(!user || (user.role !== "ADMIN" && user.role !== "DEV"));
 };

@@ -64,6 +64,8 @@ await Promise.all([
   fs.promises.rm(path.join(projectPath, ".github/workflows/build.yml"), { force: true }),
   // Remove our sonarqube configuration
   fs.promises.rm(path.join(projectPath, "sonar-project.properties"), { force: true }),
+  // Remove our sonarqube folder
+  fs.promises.rm(path.join(projectPath, ".sonar"), { recursive: true, force: true }),
 ]);
 
 cleaning.succeed(chalk.green("🧹 Install files cleaned"));

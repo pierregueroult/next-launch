@@ -8,9 +8,9 @@ type Send = Omit<MailOptions, "html"> & {
 };
 
 const send = async ({ template, ...options }: Send): Promise<void> => {
-  await transporter.sendMail({
+  transporter.sendMail({
     from: process.env.EMAIL_FROM ?? "",
-    html: typeof template === "string" ? template : render(template),
+    html: typeof template === "string" ? template : await render(template),
     ...options,
   });
 };
