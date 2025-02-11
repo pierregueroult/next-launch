@@ -1,0 +1,17 @@
+{
+  "name": "next-launch",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": ">=v22.13.1"
+  },
+  "type": "module",
+  "packageManager": "pnpm@10.3.0"
+}
