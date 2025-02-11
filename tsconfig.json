@@ -1,12 +1,13 @@
 {
-  "include": ["eslint.config.mjs", "prettier.config.mjs"],
   "compilerOptions": {
-    "module": "commonjs",
-    "esModuleInterop": true,
-    "target": "es6",
+    "module": "ESNext",
     "moduleResolution": "node",
-    "sourceMap": true,
-    "outDir": "dist"
-  },
-  "lib": ["es2015"]
+    "target": "ESNext",
+    "esModuleInterop": true,
+    "allowJs": false,
+    "strict": true,
+    "declaration": true,
+    "declarationMap": false,
+    "sourceMap": false
+  }
 }
