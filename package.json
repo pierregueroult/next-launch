@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "prepare": "husky || true",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "lint": "eslint . --config eslint.config.mjs"
   },
   "keywords": [],
   "author": "",
