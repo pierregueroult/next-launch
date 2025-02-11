@@ -3,5 +3,7 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
-  "editor.detectIndentation": false
+  "editor.detectIndentation": false,
+  "editor.minimap.enabled": false,
+  "explorer.compactFolders": false
 }

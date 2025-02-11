@@ -1,0 +1,26 @@
+{
+  "name": "create-next-launch",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "create-next-launch": "dist/index.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pierregueroult/next-launch.git",
+    "directory": "cli/install"
+  },
+  "scripts": {},
+  "keywords": [],
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^13.1.0"
+  },
+  "devDependencies": {
+    "tsc": "^2.0.4",
+    "typescript": "^5.7.3"
+  }
+}
