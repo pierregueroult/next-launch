@@ -32,7 +32,7 @@ function Page(): ReactNode {
           >
             {" "}
             {t("contribute.github")}
-          </a>
+          </a>{" "}
           .
         </small>
         <Languages />

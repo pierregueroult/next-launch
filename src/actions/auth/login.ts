@@ -26,7 +26,7 @@ const login = async (values: LoginSchema, callbackUrl?: string) => {
     await send({
       to: email,
       subject: "Verify your email",
-      template: verificationEmail({ email: verificationToken.email, token: verificationToken.token }),
+      template: await verificationEmail({ email: verificationToken.email, token: verificationToken.token }),
     });
     return { success: "Un email de vérification vous a été envoyé" };
   }
@@ -54,7 +54,7 @@ const login = async (values: LoginSchema, callbackUrl?: string) => {
       await send({
         to: email,
         subject: "Two-factor authentication",
-        template: twoFactorEmail({
+        template: await twoFactorEmail({
           email: twoFactorToken.email,
           token: twoFactorToken.token,
           expires: twoFactorToken.expires,
@@ -68,18 +68,16 @@ const login = async (values: LoginSchema, callbackUrl?: string) => {
     await signIn("credentials", {
       email,
       password,
-      redirectTo: callbackUrl || "/",
+      redirectTo: callbackUrl ?? "/",
     });
 
     return { success: "Connexion réussie" };
   } catch (error) {
     if (error instanceof AuthError) {
-      switch (error.type) {
-        case "CredentialsSignin":
-          return { error: "Les entrées sont invalides" };
-        default:
-          return { error: "Une erreur est survenue lors de la connexion" };
+      if (error.type === "CredentialsSignin") {
+        return { error: "Les entrées sont invalides" };
       }
+      return { error: "Une erreur est survenue lors de la connexion" };
     }
     throw error;
   }

@@ -2,10 +2,10 @@ import { Body, Container, Heading, Link, Section, Text } from "@react-email/comp
 import { render } from "@react-email/render";
 import React from "react";
 
-type VerificationEmailProps = {
+type VerificationEmailProps = Readonly<{
   email: string;
   token: string;
-};
+}>;
 
 export function VerificationEmail({ email, token }: VerificationEmailProps) {
   const link = `${process.env.APP_URL}/auth?action=verify&token=${token}`;
@@ -26,5 +26,6 @@ export function VerificationEmail({ email, token }: VerificationEmailProps) {
   );
 }
 
-// eslint-disable-next-line react/jsx-props-no-spreading
-export const verificationEmail = (props: VerificationEmailProps): string => render(<VerificationEmail {...props} />);
+export async function verificationEmail({ email, token }: VerificationEmailProps): Promise<string> {
+  return render(<VerificationEmail email={email} token={token} />);
+}

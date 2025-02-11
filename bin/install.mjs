@@ -23,7 +23,7 @@ console.log(
 if (process.argv.length < 3) {
   console.log(chalk.white("You better give a name to your project, pretty sure it's dope!"));
   console.log(chalk.gray("For example :"));
-  console.log(`    ${chalk.gray("npx next-launcher i-love-next-launch-project <3")}`);
+  console.log(`    ${chalk.gray("npx next-launch i-love-next-launch-project <3")}`);
   process.exit(1);
 }
 
@@ -56,8 +56,16 @@ process.chdir(projectPath);
 const cleaning = ora("▶ Cleaning install files ...").start();
 
 await Promise.all([
+  // Remove our git history
   fs.promises.rm(path.join(projectPath, ".git"), { recursive: true, force: true }),
+  // Remove the bin folder that contains the install script
   fs.promises.rm(path.join(projectPath, "bin"), { recursive: true, force: true }),
+  // Remove our sonarqube build and analysis action
+  fs.promises.rm(path.join(projectPath, ".github/workflows/build.yml"), { force: true }),
+  // Remove our sonarqube configuration
+  fs.promises.rm(path.join(projectPath, "sonar-project.properties"), { force: true }),
+  // Remove our sonarqube folder
+  fs.promises.rm(path.join(projectPath, ".sonar"), { recursive: true, force: true }),
 ]);
 
 cleaning.succeed(chalk.green("🧹 Install files cleaned"));
