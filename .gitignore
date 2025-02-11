@@ -46,3 +46,6 @@ bun.lockb
 /.next/
 /out/
 *.pem
+
+# typescript output files
+dist
