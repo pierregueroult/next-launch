@@ -13,8 +13,10 @@
   },
   "scripts": {
     "build": "tsc",
-    "dev": "concurrently -k -n \"TSC,NODE\" -c \"blue,green\" \"tsc --watch\" \"nodemon dist/index.js\"",
-    "start": "node dist/index.js"
+    "dev": "concurrently -k -n \"TSC,NODE\" -c \"blue,green\" \"pnpm run watch:typescript\" \"pnpm run watch:javascript\"",
+    "start": "node dist/index.js",
+    "watch:typescript": "tsc --watch",
+    "watch:javascript": "nodemon dist/index.js"
   },
   "keywords": [],
   "type": "module",

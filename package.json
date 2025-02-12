@@ -6,7 +6,10 @@
   "scripts": {
     "prepare": "husky || true",
     "format": "prettier --write .",
-    "lint": "eslint . --config eslint.config.mjs"
+    "lint": "eslint . --config eslint.config.mjs",
+    "cli:dev": "pnpm --filter create-next-launch dev",
+    "cli:start": "pnpm --filter create-next-launch start",
+    "cli:build": "pnpm --filter create-next-launch build"
   },
   "keywords": [],
   "author": "",
