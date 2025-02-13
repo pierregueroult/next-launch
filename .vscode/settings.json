@@ -6,7 +6,7 @@
   "editor.detectIndentation": false,
   "editor.minimap.enabled": false,
   "explorer.compactFolders": false,
-  "cSpell.words": ["nodenext", "trivago"],
+  "cSpell.words": ["clsx", "nodenext", "trivago"],
   "yaml.schemas": {
     "https://json.schemastore.org/github-issue-config.json": ".github/ISSUE_TEMPLATE/config.yml"
   }
