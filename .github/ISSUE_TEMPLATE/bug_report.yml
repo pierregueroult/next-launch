@@ -1,0 +1,59 @@
+name: Bug report 🚨
+description: Create a report to help us improve
+title: "[BUG] "
+body:
+  - type: textarea
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is, and what you expected to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: To Reproduce
+      description: Steps to reproduce the behavior.
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: Reproduction repository or code sandbox
+      description: Please provide a link to a repository on GitHub or CodeSandbox that reproduces the issue.
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Environment
+      description: |
+        Please provide the following information (if applicable):
+        - OS: [e.g. iOS]
+        - Browser [e.g. chrome, safari]
+        - Version of next-launch [e.g. 22]
+        - Version of next.js [e.g. 11.1.2]
+        - Version of react [e.g. 17.0.2]
+        - any other relevant information about your environment
+
+  - type: textarea
+    attributes:
+      label: Any other information that you judge to be useful
+      description: Any other information that you judge to be useful
+
+  - type: checkboxes
+    attributes:
+      label: Checklist
+      description: Before submitting the issue, please make sure you have done the following
+      options:
+        - label: I have searched the issues of this repository and believe that this is not a duplicate
+          required: true
+        - label: I have read the CONTRIBUTING and CODE_OF_CONDUCT documents
+          required: true
+
+  - type: checkboxes
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our Code of Conduct.
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true

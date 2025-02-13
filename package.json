@@ -6,13 +6,15 @@
   "scripts": {
     "prepare": "husky || true",
     "format": "prettier --write . --config prettier.config.mjs",
-    "lint": "eslint . --config eslint.config.mjs",
+    "lint": "eslint . --config eslint.config.mjs --fix",
     "cli:dev": "pnpm --filter create-next-launch dev",
     "cli:start": "pnpm --filter create-next-launch start",
     "cli:build": "pnpm --filter create-next-launch build",
     "www:dev": "pnpm --filter next-launch-www dev",
     "www:start": "pnpm --filter next-launch-www start",
-    "www:build": "pnpm --filter next-launch-www build"
+    "www:build": "pnpm --filter next-launch-www build",
+    "ci:format": "prettier --check . --config prettier.config.mjs",
+    "ci:lint": "eslint . --config eslint.config.mjs"
   },
   "keywords": [],
   "author": "",
