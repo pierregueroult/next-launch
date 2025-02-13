@@ -1,10 +1,18 @@
-import { Command } from "commander";
+import { CLI_DESCRIPTION, CLI_NAME } from "./constants.js";
+import { getCliVersion } from "./lib/version.js";
+import { program } from "commander";
 
-const program = new Command()
-  .name("create-next-launch")
-  .description("Create a new Next.js project with Launch Design System")
-  .action(() => {
-    console.log("Hello from create-next-launch");
+program
+  .name(CLI_NAME)
+  .description(CLI_DESCRIPTION)
+  .version(getCliVersion())
+  .option("-h, --help", "display help for command");
+
+program
+  .command("init", { isDefault: true })
+  .description(CLI_DESCRIPTION)
+  .action(async (options): Promise<void> => {
+    console.log("init command", options);
   });
 
 program.parse(process.argv);
