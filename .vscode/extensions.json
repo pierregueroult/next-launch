@@ -3,6 +3,8 @@
     "streetsidesoftware.code-spell-checker",
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
-    "sonarsource.sonarlint-vscode"
+    "sonarsource.sonarlint-vscode",
+    "astro-build.astro-vscode",
+    "unifiedjs.vscode-mdx"
   ]
 }

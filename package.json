@@ -9,7 +9,10 @@
     "lint": "eslint . --config eslint.config.mjs",
     "cli:dev": "pnpm --filter create-next-launch dev",
     "cli:start": "pnpm --filter create-next-launch start",
-    "cli:build": "pnpm --filter create-next-launch build"
+    "cli:build": "pnpm --filter create-next-launch build",
+    "www:dev": "pnpm --filter next-launch-www dev",
+    "www:start": "pnpm --filter next-launch-www start",
+    "www:build": "pnpm --filter next-launch-www build"
   },
   "keywords": [],
   "author": "",
