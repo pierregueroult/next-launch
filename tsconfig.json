@@ -1,13 +1,12 @@
 {
+  "include": ["commitlint.config.mjs", "eslint.config.mjs", "lint-staged.config.mjs", "prettier.config.mjs"],
   "compilerOptions": {
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "target": "ESNext",
-    "esModuleInterop": true,
+    // Compilation things
+    "target": "ES6",
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
     "allowJs": false,
-    "strict": true,
-    "declaration": true,
-    "declarationMap": false,
-    "sourceMap": false
+    "checkJs": false,
+    "esModuleInterop": true
   }
 }
