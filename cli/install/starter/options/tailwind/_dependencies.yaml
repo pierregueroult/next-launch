@@ -1,0 +1,20 @@
+dependencies:
+  - name: tailwindcss
+    version: ^3.4.1
+    isDev: true
+
+  - name: postcss
+    version: ^8.5.2
+    isDev: true
+
+  - name: tailwind-merge
+    version: ^2.5.4
+    isDev: false
+
+  - name: tailwind-animate
+    version: ^1.0.7
+    isDev: false
+
+  - name: clsx
+    version: ^2.1.1
+    isDev: false
