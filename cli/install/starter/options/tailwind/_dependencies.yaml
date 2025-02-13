@@ -1,20 +1,16 @@
 dependencies:
-  - name: tailwindcss
-    version: ^3.4.1
-    isDev: true
+  - name: "tailwind-merge"
+    version: "^2.6.0"
 
-  - name: postcss
-    version: ^8.5.2
-    isDev: true
+  - name: "tailwindcss-animate"
+    version: "^1.0.7"
 
-  - name: tailwind-merge
-    version: ^2.5.4
-    isDev: false
+  - name: "clsx"
+    version: "^2.1.1"
 
-  - name: tailwind-animate
-    version: ^1.0.7
-    isDev: false
+devDependencies:
+  - name: "tailwindcss"
+    version: "^3.4.17"
 
-  - name: clsx
-    version: ^2.1.1
-    isDev: false
+  - name: "postcss"
+    version: "^8.5.2"
