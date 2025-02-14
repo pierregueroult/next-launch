@@ -1,7 +1,6 @@
 {
   "include": ["commitlint.config.mjs", "eslint.config.mjs", "lint-staged.config.mjs", "prettier.config.mjs"],
   "compilerOptions": {
-    // Compilation things
     "target": "ES6",
     "module": "NodeNext",
     "moduleResolution": "nodenext",
