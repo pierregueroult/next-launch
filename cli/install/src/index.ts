@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { CLI_DESCRIPTION, CLI_NAME } from "./constants.js";
 import { getCliVersion } from "./lib/version.js";
 import { type Options } from "./schemas/options.js";
