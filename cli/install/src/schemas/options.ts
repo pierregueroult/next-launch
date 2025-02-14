@@ -2,6 +2,7 @@ import { packageManagers } from "./managers.js";
 import { z } from "zod";
 
 export const optionsSchema = z.object({
+  name: z.string().nonempty().optional(),
   tailwind: z
     .boolean({
       message: "The --tailwind flag must be a boolean",
@@ -26,3 +27,7 @@ export const optionsSchema = z.object({
 });
 
 export type Options = z.infer<typeof optionsSchema>;
+
+export const requiredOptionsSchema = optionsSchema.required();
+
+export type RequiredOptions = z.infer<typeof requiredOptionsSchema>;
