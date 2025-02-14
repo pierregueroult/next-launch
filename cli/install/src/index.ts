@@ -44,6 +44,9 @@ program
         "pnpm",
       );
     }
+    if (!options.emails) {
+      options.emails = await booleanPrompt("Would you like to add email support to the project?", true);
+    }
 
     // * Setup the project
   });

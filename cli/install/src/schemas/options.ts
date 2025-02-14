@@ -18,6 +18,11 @@ export const optionsSchema = z.object({
     })
     .optional(),
   "package-manager": z.enum(packageManagers as [string, ...string[]]).optional(),
+  emails: z
+    .boolean({
+      message: "The --emails flag must be a boolean",
+    })
+    .optional(),
 });
 
 export type Options = z.infer<typeof optionsSchema>;
