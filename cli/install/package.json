@@ -27,6 +27,7 @@
     "commander": "^13.1.0",
     "figlet": "^1.8.0",
     "gradient-string": "^3.0.0",
+    "js-yaml": "^4.1.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {
@@ -34,6 +35,7 @@
     "@react-email/components": "^0.0.33",
     "@react-email/render": "^1.0.5",
     "@types/figlet": "^1.7.0",
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "^20",
     "@types/nodemailer": "^6.4.17",
     "@types/react": "^19",

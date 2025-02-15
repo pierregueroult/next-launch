@@ -5,7 +5,7 @@ import { getCliVersion } from "./lib/version.js";
 import { RequiredOptions, type Options } from "./schemas/options.js";
 import { parseOptions, parseRequiredOptions } from "./utils/parse-options.js";
 import printMotd from "./utils/print-motd.js";
-import { booleanPrompt, selectPrompt, textPrompt } from "./utils/prompts.js";
+import { booleanPrompt, selectPrompt, projectNamePrompt } from "./utils/prompts.js";
 import { program } from "commander";
 
 program.name(CLI_NAME).description(CLI_DESCRIPTION).version(getCliVersion());
@@ -27,7 +27,7 @@ program
 
     // * Prompt for options if not provided
     if (!options.name) {
-      options.name = await textPrompt("What is the name of the project ?", "", "my-awesome-next-launch-project");
+      options.name = await projectNamePrompt("What is the name of the project ?", "", "my-awesome-next-launch-project");
     }
     if (!options.tailwind) {
       options.tailwind = await booleanPrompt("Would you like to add tailwindcss to the project?", true);
