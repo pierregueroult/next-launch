@@ -25,7 +25,7 @@ export async function createDirectory(dir: string, mustNotExist: boolean = false
   }
 }
 
-const specialBehaviorFiles = new Set(["dependencies.yaml", "commands.yaml"]);
+const specialBehaviorFiles = new Set(["dependencies.yaml", "commands.yaml", "ignores.yaml"]);
 
 export async function copyDirectory(source: string, destination: string): Promise<void> {
   const entries = await fs.promises.readdir(source, { withFileTypes: true });

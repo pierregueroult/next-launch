@@ -1,5 +1,5 @@
 commands:
-  - "postinstall": "prisma generate"
+  - "postinstall": "prisma generate --schema src/db/schema.prisma"
   - "db:init": "pnpm db:generate && pnpm db:push"
   - "db:generate": "prisma generate --schema src/db/schema.prisma"
   - "db:push": "prisma db push --schema src/db/schema.prisma"

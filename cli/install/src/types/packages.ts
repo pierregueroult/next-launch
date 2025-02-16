@@ -17,3 +17,21 @@ export type YamlDependencies = {
     version: string;
   }[];
 };
+
+export type YamlCommands = {
+  commands: [
+    {
+      [command: string]: string;
+    },
+  ];
+};
+
+export type Commands = {
+  commands: {
+    [command: string]: string;
+  };
+};
+
+export type Ignores = {
+  git: string;
+};
