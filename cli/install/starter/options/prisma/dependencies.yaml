@@ -1,0 +1,7 @@
+dependencies:
+  - name: "@prisma/client"
+    version: "^6.3.1"
+
+devDependencies:
+  - name: "prisma"
+    version: "^6.3.1"

@@ -1,0 +1,13 @@
+dependencies:
+  - name: "@react-email/components"
+    version: "^0.0.33"
+
+  - name: "@react-email/render"
+    version: "^1.0.5"
+
+  - name: "nodemailer"
+    version: "^6.10.0"
+
+devDependencies:
+  - name: "@types/nodemailer"
+    version: "^6.4.17"

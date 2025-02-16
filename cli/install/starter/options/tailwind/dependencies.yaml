@@ -1,0 +1,16 @@
+dependencies:
+  - name: "tailwind-merge"
+    version: "^2.6.0"
+
+  - name: "tailwindcss-animate"
+    version: "^1.0.7"
+
+  - name: "clsx"
+    version: "^2.1.1"
+
+devDependencies:
+  - name: "tailwindcss"
+    version: "^3.4.17"
+
+  - name: "postcss"
+    version: "^8.5.2"

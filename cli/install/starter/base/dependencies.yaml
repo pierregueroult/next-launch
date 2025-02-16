@@ -1,0 +1,22 @@
+dependencies:
+  - name: "react"
+    version: "^19.0.0"
+
+  - name: "react-dom"
+    version: "^19.0.0"
+
+  - name: "next"
+    version: "^15.1.7"
+
+devDependencies:
+  - name: "@types/node"
+    version: "^20"
+
+  - name: "@types/react"
+    version: "^19"
+
+  - name: "@types/react-dom"
+    version: "^19"
+
+  - name: "typescript"
+    version: "^5.7.3"

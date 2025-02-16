@@ -1,9 +1,4 @@
-/node_modules
-/.next
-/out
-/coverage
-/_next/
-/dist/
-/tmp/
-
 pnpm-lock.yaml
+node_modules
+.env*
+out

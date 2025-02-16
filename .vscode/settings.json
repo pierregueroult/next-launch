@@ -4,12 +4,14 @@
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
   "editor.detectIndentation": false,
-  "i18n-ally.localesPaths": [
-    "src/lang",
-    "src/actions/lang",
-    "src/components/languages",
-    "src/lang/messages",
-    "src/schemas/lang"
-  ],
-  "i18n-ally.sourceLanguage": "en"
+  "editor.minimap.enabled": false,
+  "explorer.compactFolders": false,
+  "cSpell.words": ["clsx", "nodenext", "trivago"],
+  "yaml.schemas": {
+    "https://json.schemastore.org/github-issue-config.json": ".github/ISSUE_TEMPLATE/config.yml"
+  },
+  "sonarlint.connectedMode.project": {
+    "connectionId": "https-sonar-pierregueroult-dev",
+    "projectKey": "pierregueroult_next-launch_bfa13057-ca32-4aa4-b80d-9bd64034deac"
+  }
 }

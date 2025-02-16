@@ -1,10 +1,10 @@
 {
   "recommendations": [
-    "aaron-bond.better-comments",
-    "esbenp.prettier-vscode",
-    "prisma.prisma",
+    "streetsidesoftware.code-spell-checker",
     "dbaeumer.vscode-eslint",
-    "mhutchie.git-graph",
-    "bradlc.vscode-tailwindcss"
+    "esbenp.prettier-vscode",
+    "sonarsource.sonarlint-vscode",
+    "astro-build.astro-vscode",
+    "unifiedjs.vscode-mdx"
   ]
 }

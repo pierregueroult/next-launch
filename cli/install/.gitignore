@@ -1,0 +1,16 @@
+# Ignore everything in this root directory
+/**/*
+
+
+# Except the src folder and its contents as well as the starter folder and its contents
+!src/
+!starter/
+!src/**/*
+!starter/**/*
+
+# Except the root files (including this .gitignore file)
+!/*.*
+
+
+# The goal of this .gitignore file is to ignore all the next-launch app 
+# that may have been created in this directory while debugging the CLI

@@ -1,0 +1,57 @@
+{
+  "name": "create-next-launch",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "create-next-launch": "dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pierregueroult/next-launch.git",
+    "directory": "cli/install"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "concurrently -k -n \"TSC,NODE\" -c \"blue,green\" \"pnpm run watch:typescript\" \"pnpm run watch:javascript\"",
+    "start": "node dist/index.js",
+    "watch:typescript": "tsc --watch --preserveWatchOutput",
+    "watch:javascript": "nodemon dist/index.js "
+  },
+  "keywords": [],
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@clack/prompts": "^0.10.0",
+    "commander": "^13.1.0",
+    "figlet": "^1.8.0",
+    "gradient-string": "^3.0.0",
+    "js-yaml": "^4.1.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@prisma/client": "^6.3.1",
+    "@react-email/components": "^0.0.33",
+    "@react-email/render": "^1.0.5",
+    "@types/figlet": "^1.7.0",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^20",
+    "@types/nodemailer": "^6.4.17",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "clsx": "^2.1.1",
+    "concurrently": "^9.1.2",
+    "next": "^15.1.7",
+    "nodemailer": "^6.10.0",
+    "nodemon": "^3.1.9",
+    "postcss": "^8.5.2",
+    "prisma": "^6.3.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwind-merge": "^2.6.0",
+    "tailwindcss": "^3.4.17",
+    "tailwindcss-animate": "^1.0.7",
+    "typescript": "^5.7.3"
+  }
+}
