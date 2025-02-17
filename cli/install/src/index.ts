@@ -20,17 +20,13 @@ program
   .option("--package-manager <package-manager>", "The package manager to use")
   .description(CLI_DESCRIPTION)
   .action(async (name, flags): Promise<void> => {
-    // Initialize options
     globalThis.isVerbose = flags && "verbose" in flags && flags.verbose === true;
     const options: Options = parseOptions(name ? { name, ...flags } : flags);
     await printMotd();
 
-    // Texts prompts
     if (!options.name) {
       options.name = await projectNamePrompt("What is the name of the project ?", "", "my-awesome-next-launch-project");
     }
-
-    // Commands prompts
     if (!options.git) {
       options.git = await booleanPrompt("Would you like to initialize a git repository?", true);
     }
@@ -48,8 +44,6 @@ program
         "pnpm",
       );
     }
-
-    // Templates prompts
     if (!options.tailwind) {
       options.tailwind = await booleanPrompt("Would you like to add tailwindcss to the project?", true);
     }
@@ -57,12 +51,8 @@ program
       options.emails = await booleanPrompt("Would you like to add email support to the project?", true);
     }
 
-    // * Setup the project
     const completedOptions: RequiredOptions = parseRequiredOptions(options);
     await setupProject(completedOptions);
-
-    // * Print success message
-    console.log("Project setup complete!");
   });
 
 program.parse(process.argv);

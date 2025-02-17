@@ -15,8 +15,8 @@
     "build": "tsc",
     "dev": "concurrently -k -n \"TSC,NODE\" -c \"blue,green\" \"pnpm run watch:typescript\" \"pnpm run watch:javascript\"",
     "start": "node dist/index.js",
-    "watch:typescript": "tsc --watch --preserveWatchOutput",
-    "watch:javascript": "nodemon dist/index.js "
+    "watch:ts": "tsc --watch --preserveWatchOutput",
+    "watch:js": "nodemon dist/index.js "
   },
   "keywords": [],
   "type": "module",
@@ -51,6 +51,7 @@
     "prisma": "^6.3.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-scan": "^0.1.3",
     "tailwind-merge": "^2.6.0",
     "tailwindcss": "^3.4.17",
     "tailwindcss-animate": "^1.0.7",
