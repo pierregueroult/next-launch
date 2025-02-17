@@ -25,6 +25,7 @@
   "dependencies": {
     "@clack/prompts": "^0.10.0",
     "commander": "^13.1.0",
+    "diff": "^7.0.0",
     "figlet": "^1.8.0",
     "gradient-string": "^3.0.0",
     "js-yaml": "^4.1.0",
@@ -34,6 +35,7 @@
     "@prisma/client": "^6.3.1",
     "@react-email/components": "^0.0.33",
     "@react-email/render": "^1.0.5",
+    "@types/diff": "^7.0.1",
     "@types/figlet": "^1.7.0",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^20",

@@ -46,7 +46,6 @@ export async function setupProject(options: RequiredOptions): Promise<void> {
   }
 
   // Generate the package.json file
-  console.log(commands);
   await generatePackageJson(dependencies, commands, projectDir, options.name);
   await generateGitIgnore(ignores, projectDir);
 

@@ -14,7 +14,7 @@ const config = {
         "revert",
         "deploy",
         "build",
-        "WIP",
+        "wip",
         "important",
         "breaking",
         "chore",

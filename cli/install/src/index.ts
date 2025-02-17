@@ -25,8 +25,6 @@ program
     const options: Options = parseOptions(name ? { name, ...flags } : flags);
     await printMotd();
 
-    // Prompt for options if not provided
-
     // Texts prompts
     if (!options.name) {
       options.name = await projectNamePrompt("What is the name of the project ?", "", "my-awesome-next-launch-project");

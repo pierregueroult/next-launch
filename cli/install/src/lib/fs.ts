@@ -1,3 +1,4 @@
+import { mergeFiles } from "./merge.js";
 import * as fs from "node:fs";
 import * as path from "node:path";
 
@@ -49,6 +50,8 @@ export async function copyFile(source: string, destination: string): Promise<voi
   try {
     try {
       await fs.promises.access(destination);
+
+      mergeFiles(source, destination);
     } catch (error: unknown) {
       if (error instanceof Error && "code" in error) {
         if (error.code === "ENOENT") {
