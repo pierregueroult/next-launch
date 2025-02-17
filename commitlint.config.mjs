@@ -22,7 +22,6 @@ const config = {
         "tools",
       ],
     ],
-    "type-case": [2, "always", "lower-case"],
     "subject-case": [2, "always", "lower-case"],
   },
 };
