@@ -1,4 +1,6 @@
+import { installDependencies } from "./dependencies.js";
 import { copyDirectory, createDirectory } from "./fs.js";
+import { initGitRepository } from "./git.js";
 import { addDependencies, generatePackageJson, addCommands, addIgnores, generateGitIgnore } from "./package.js";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -45,4 +47,7 @@ export async function setupProject(options: RequiredOptions): Promise<void> {
 
   await generatePackageJson(dependencies, commands, projectDir, options.name);
   await generateGitIgnore(ignores, projectDir);
+
+  if (options.install) await installDependencies(options["package-manager"], projectDir);
+  if (options.git) await initGitRepository(projectDir);
 }

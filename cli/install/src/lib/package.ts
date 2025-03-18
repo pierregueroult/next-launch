@@ -116,7 +116,11 @@ export async function generateGitIgnore(ignore: Ignores, projectDir: string): Pr
 
 function sortDependenciesByKeys(dependencies: Dependencies): Dependencies {
   return {
-    dependencies: Object.fromEntries(Object.entries(dependencies.dependencies).sort()),
-    devDependencies: Object.fromEntries(Object.entries(dependencies.devDependencies).sort()),
+    dependencies: Object.fromEntries(
+      Object.entries(dependencies.dependencies).sort(([keyA], [keyB]) => keyA.localeCompare(keyB)),
+    ),
+    devDependencies: Object.fromEntries(
+      Object.entries(dependencies.devDependencies).sort(([keyA], [keyB]) => keyA.localeCompare(keyB)),
+    ),
   };
 }

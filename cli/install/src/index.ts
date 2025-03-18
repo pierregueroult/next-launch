@@ -4,7 +4,7 @@ import { setupProject } from "./lib/project.js";
 import { getCliVersion } from "./lib/version.js";
 import { RequiredOptions, type Options } from "./schemas/options.js";
 import { parseOptions, parseRequiredOptions } from "./utils/parse-options.js";
-import printMotd from "./utils/print-motd.js";
+import { startMotd, endMotd } from "./utils/print-motd.js";
 import { booleanPrompt, selectPrompt, projectNamePrompt } from "./utils/prompts.js";
 import { program } from "commander";
 
@@ -22,7 +22,7 @@ program
   .action(async (name, flags): Promise<void> => {
     globalThis.isVerbose = flags && "verbose" in flags && flags.verbose === true;
     const options: Options = parseOptions(name ? { name, ...flags } : flags);
-    await printMotd();
+    await startMotd();
 
     if (!options.name) {
       options.name = await projectNamePrompt("What is the name of the project ?", "", "my-awesome-next-launch-project");
@@ -56,6 +56,8 @@ program
 
     const completedOptions: RequiredOptions = parseRequiredOptions(options);
     await setupProject(completedOptions);
+
+    endMotd(completedOptions.name, completedOptions["package-manager"]);
   });
 
 program.parse(process.argv);
