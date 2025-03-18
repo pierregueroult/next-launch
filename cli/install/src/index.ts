@@ -47,6 +47,9 @@ program
     if (!options.tailwind) {
       options.tailwind = await booleanPrompt("Would you like to add tailwindcss to the project?", true);
     }
+    if (!options["react-scan"]) {
+      options["react-scan"] = await booleanPrompt("Would you like to add react-scan to the project?", true);
+    }
     if (!options.emails) {
       options.emails = await booleanPrompt("Would you like to add email support to the project?", true);
     }

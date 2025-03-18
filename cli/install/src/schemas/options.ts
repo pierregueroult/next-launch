@@ -8,6 +8,16 @@ export const optionsSchema = z.object({
       message: "The --tailwind flag must be a boolean",
     })
     .optional(),
+  "react-scan": z
+    .boolean({
+      message: "The --react-scan flag must be a boolean",
+    })
+    .optional(),
+  emails: z
+    .boolean({
+      message: "The --emails flag must be a boolean",
+    })
+    .optional(),
   git: z
     .boolean({
       message: "The --git flag must be a boolean",
@@ -19,11 +29,6 @@ export const optionsSchema = z.object({
     })
     .optional(),
   "package-manager": z.enum(packageManagers as [string, ...string[]]).optional(),
-  emails: z
-    .boolean({
-      message: "The --emails flag must be a boolean",
-    })
-    .optional(),
 });
 
 export type Options = z.infer<typeof optionsSchema>;
