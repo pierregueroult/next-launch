@@ -75,6 +75,8 @@ export async function generatePackageJson(
 ): Promise<void> {
   const packageJsonPath: string = path.join(projectDir, "package.json");
 
+  const sortDependencies = sortDependenciesByKeys(dependencies);
+
   const packageJson: PackageJson = {
     name: projectName,
     version: "1.0.0",
@@ -82,8 +84,8 @@ export async function generatePackageJson(
     description: "TODO: Write a better description - New next.js project bootstrapped with next-launch 🛰️",
     keywords: [],
     scripts: commands.commands,
-    dependencies: dependencies.dependencies,
-    devDependencies: dependencies.devDependencies,
+    dependencies: sortDependencies.dependencies,
+    devDependencies: sortDependencies.devDependencies,
   };
 
   const stringifiedPackageJson: string = JSON.stringify(packageJson, null, 2);
@@ -110,4 +112,11 @@ export async function generateGitIgnore(ignore: Ignores, projectDir: string): Pr
       console.error(error);
     }
   }
+}
+
+function sortDependenciesByKeys(dependencies: Dependencies): Dependencies {
+  return {
+    dependencies: Object.fromEntries(Object.entries(dependencies.dependencies).sort()),
+    devDependencies: Object.fromEntries(Object.entries(dependencies.devDependencies).sort()),
+  };
 }

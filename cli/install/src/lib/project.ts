@@ -26,7 +26,10 @@ export async function setupProject(options: RequiredOptions): Promise<void> {
       }, {}),
   };
 
+  const theyAreNotTemplates = ["git", "install"];
+
   for (const [key, value] of Object.entries(templateOptions)) {
+    if (theyAreNotTemplates.includes(key)) continue;
     if (value) {
       const templateDir: string = path.join(
         path.dirname(fileURLToPath(import.meta.url)),
@@ -42,7 +45,4 @@ export async function setupProject(options: RequiredOptions): Promise<void> {
 
   await generatePackageJson(dependencies, commands, projectDir, options.name);
   await generateGitIgnore(ignores, projectDir);
-
-  // Handle the optional commands
-  // there will go git and install commands
 }
