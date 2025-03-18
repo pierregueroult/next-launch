@@ -48,6 +48,13 @@ export async function setupProject(options: RequiredOptions): Promise<void> {
   await generatePackageJson(dependencies, commands, projectDir, options.name);
   await generateGitIgnore(ignores, projectDir);
 
-  if (options.install) await installDependencies(options["package-manager"], projectDir);
-  if (options.git) await initGitRepository(projectDir);
+  let first = true;
+
+  if (options.install) {
+    await installDependencies(options["package-manager"], projectDir, first);
+    first = false;
+  }
+  if (options.git) {
+    await initGitRepository(projectDir, first);
+  }
 }

@@ -1,4 +1,4 @@
-import { mergeFiles } from "./merge.js";
+import { mergeFiles } from "./merge/index.js";
 import * as fs from "node:fs";
 import * as path from "node:path";
 
