@@ -1,16 +1,25 @@
 dependencies:
   - name: "tailwind-merge"
-    version: "^2.6.0"
-
-  - name: "tailwindcss-animate"
-    version: "^1.0.7"
+    version: "^3"
 
   - name: "clsx"
     version: "^2.1.1"
 
+  - name: "class-variance-authority"
+    version: "^0.7.1"
+
 devDependencies:
   - name: "tailwindcss"
-    version: "^3.4.17"
+    version: "^4"
+
+  - name: "@tailwindcss/postcss"
+    version: "^4"
+
+  - name: "tailwindcss-animate"
+    version: "^1"
+
+  - name: "tailwind-scrollbar"
+    version: "^4"
 
   - name: "postcss"
-    version: "^8.5.2"
+    version: "^8.5.3"
