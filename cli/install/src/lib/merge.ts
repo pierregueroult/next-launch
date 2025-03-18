@@ -1,5 +1,5 @@
 import {
-  PatchFiles,
+  type PatchFiles,
   type PatchFilesAst,
   type PatchFilesConcat,
   type PatchFilesJson,
@@ -10,7 +10,7 @@ import {
   type JsxAttribute,
   type JsxElement,
   type JsxSelfClosingElement,
-  type JsxSpreadAttribute,
+  type SourceFile,
   Project,
   SyntaxKind,
 } from "ts-morph";
@@ -61,133 +61,39 @@ export function applyAstMerge(targetPath: string, { patch }: PatchFilesAst): voi
     }
   }
 
-  if (patch.jsx && patch.jsx.attributes) {
+  if (patch.jsx?.attributes) {
     for (const attr of patch.jsx.attributes) {
-      const elements: (JsxElement | JsxSelfClosingElement)[] = [];
+      const elements = findJsxElements(sourceFile, attr.selector);
+      if (elements.length === 0) throw new Error("Element not found");
 
-      sourceFile.forEachDescendant((node) => {
-        if (node.getKind() === SyntaxKind.JsxElement) {
-          const element = node as JsxElement;
-          const tagname = element.getOpeningElement().getTagNameNode().getText();
-          if (tagname === attr.selector.element) {
-            if (
-              attr.selector.class &&
-              element.getOpeningElement().getAttribute("className")?.getText() !== attr.selector.class
-            ) {
-              return;
-            } else if (
-              attr.selector.id &&
-              element.getOpeningElement().getAttribute("id")?.getText() !== attr.selector.id
-            ) {
-              return;
-            }
-            elements.push(element);
-          }
-        } else if (node.getKind() === SyntaxKind.JsxSelfClosingElement) {
-          const element = node as JsxSelfClosingElement;
-          const tagname = element.getTagNameNode().getText();
-          if (tagname === attr.selector.element) {
-            if (attr.selector.class && element.getAttribute("className")?.getText() !== attr.selector.class) {
-              return;
-            } else if (attr.selector.id && element.getAttribute("id")?.getText() !== attr.selector.id) {
-              return;
-            }
-            elements.push(element);
-          }
-        }
-      });
-
-      if (elements.length === 0) {
-        throw new Error("Element not found");
-      }
-
-      elements.forEach((element) => {
-        let attribute: JsxAttribute | JsxSpreadAttribute | undefined;
-        let value = attr.value;
-
-        if (element.getKind() === SyntaxKind.JsxElement) {
-          attribute = (element as JsxElement).getOpeningElement().getAttribute(attr.name);
-        } else {
-          attribute = (element as JsxSelfClosingElement).getAttribute(attr.name);
-        }
-
-        switch (attr.actions) {
-          case "add":
-            if (attribute) {
-              if (attribute.getKind() === SyntaxKind.JsxAttribute) {
-                value = (attribute as JsxAttribute).getInitializerOrThrow().getText() + " " + value;
-              }
-            }
-            if (element.getKind() === SyntaxKind.JsxElement) {
-              (element as JsxElement).getOpeningElement().addAttribute({
-                name: attr.name,
-                initializer: `"${value}"`,
-              });
-            } else {
-              (element as JsxSelfClosingElement).addAttribute({
-                name: attr.name,
-                initializer: `"${value}"`,
-              });
-            }
-            break;
-          case "replace":
-            if (element.getKind() === SyntaxKind.JsxElement) {
-              (element as JsxElement).getOpeningElement().insertAttribute(1, {
-                name: attr.name,
-                initializer: `"${value}"`,
-              });
-            } else {
-              (element as JsxSelfClosingElement).insertAttribute(1, {
-                name: attr.name,
-                initializer: `"${value}"`,
-              });
-            }
-
-            break;
-          case "remove":
-            if (attribute) {
-              attribute.remove();
-            }
-            break;
-          default:
-            throw new Error("Unknown action");
-        }
-      });
+      elements.forEach((element) => modifyJsxAttribute(element, attr));
     }
   }
 
-  if (patch.jsx && patch.jsx.elements) {
+  if (patch.jsx?.elements) {
     for (const element of patch.jsx.elements) {
-      const parentElement = sourceFile.getDescendantsOfKind(SyntaxKind.JsxElement).find((node) => {
-        const tagname = node.getOpeningElement().getTagNameNode().getText();
-        if (tagname === element.parent.selector.element) {
-          if (
-            element.parent.selector.class &&
-            node.getOpeningElement().getAttribute("className")?.getText() !== element.parent.selector.class
-          ) {
-            return false;
-          } else if (
-            element.parent.selector.id &&
-            node.getOpeningElement().getAttribute("id")?.getText() !== element.parent.selector.id
-          ) {
-            return false;
-          }
-          return true;
-        }
-        return false;
-      });
+      const parentElements = findJsxElements(sourceFile, element.parent.selector);
+      if (parentElements.length === 0) throw new Error("Parent element not found");
 
-      if (!parentElement) {
-        throw new Error("Parent element not found");
-      }
+      parentElements
+        .filter((parentElement) => parentElement.getKind() === SyntaxKind.JsxElement)
+        .forEach((parentElement) => {
+          const parentBody = parentElement
+            .getChildren()
+            .filter((child) => {
+              if (parentElement.getKind() === SyntaxKind.JsxElement) {
+                const jsxElement = parentElement as JsxElement;
+                return child !== jsxElement.getOpeningElement() && child !== jsxElement.getClosingElement();
+              }
+              return true;
+            })
+            .map((child) => child.getText())
+            .join("\n");
 
-      const parentBody = parentElement
-        .getChildren()
-        .filter((child) => child !== parentElement.getOpeningElement() && child !== parentElement.getClosingElement())
-        .map((child) => child.getText())
-        .join("\n");
-
-      parentElement.setBodyText(`${parentBody}${generateJsxFromElement(element.name, element.attributes)}`);
+          (parentElement as JsxElement).setBodyText(
+            `${parentBody}${generateJsxFromElement(element.name, element.attributes)}`,
+          );
+        });
     }
   }
 
@@ -214,4 +120,48 @@ function generateJsxFromElement(name: string, attributes: { value?: string; name
 
   if (attr) return `<${name} ${attr}/>`;
   return `<${name}/>`;
+}
+
+function findJsxElements(sourceFile: SourceFile, selector: { element?: string; class?: string; id?: string }) {
+  return sourceFile.getDescendantsOfKind(SyntaxKind.JsxElement).filter((node) => {
+    const tagname = node.getOpeningElement().getTagNameNode().getText();
+    if (tagname !== selector.element) return false;
+
+    const className = node.getOpeningElement().getAttribute("className")?.getText();
+    const id = node.getOpeningElement().getAttribute("id")?.getText();
+
+    if (selector.class && className !== selector.class) return false;
+    if (selector.id && id !== selector.id) return false;
+
+    return true;
+  }) as (JsxElement | JsxSelfClosingElement)[];
+}
+
+function modifyJsxAttribute(
+  element: JsxElement | JsxSelfClosingElement,
+  attr: { name?: string; value?: string; actions?: string },
+) {
+  const openingElement =
+    element.getKind() === SyntaxKind.JsxElement
+      ? (element as JsxElement).getOpeningElement()
+      : (element as JsxSelfClosingElement);
+  const attribute = openingElement.getAttribute(attr.name);
+  let value = attr.value;
+
+  switch (attr.actions) {
+    case "add":
+      if (attribute && attribute.getKind() === SyntaxKind.JsxAttribute) {
+        value = (attribute as JsxAttribute).getInitializerOrThrow().getText() + " " + value;
+      }
+      openingElement.addAttribute({ name: attr.name, initializer: `"${value}"` });
+      break;
+    case "replace":
+      openingElement.insertAttribute(1, { name: attr.name, initializer: `"${value}"` });
+      break;
+    case "remove":
+      attribute?.remove();
+      break;
+    default:
+      throw new Error("Unknown action");
+  }
 }
