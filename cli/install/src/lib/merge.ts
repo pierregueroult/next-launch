@@ -3,6 +3,9 @@ import {
   type PatchFilesAst,
   type PatchFilesConcat,
   type PatchFilesJson,
+  type PatchAstImport,
+  type PatchAstJsxElement,
+  type PatchAstJsxAttribute,
   patchFilesSchema,
 } from "../schemas/patchFiles.js";
 import * as fs from "node:fs";
@@ -48,53 +51,64 @@ export async function mergeFiles(source: string, destination: string): Promise<v
   }
 }
 
+function applyAstMergeImports(sourceFile: SourceFile, imports: PatchAstImport[]): void {
+  for (const imp of imports) {
+    sourceFile.addImportDeclaration({
+      moduleSpecifier: imp.from,
+      namedImports: imp.import ? imp.import : undefined,
+    });
+  }
+}
+
+function applyAstMergeJsxAttributes(sourceFile: SourceFile, attributes: PatchAstJsxAttribute[]): void {
+  for (const attr of attributes) {
+    const elements = findJsxElements(sourceFile, attr.selector);
+    if (elements.length === 0) throw new Error("Element not found");
+    elements.forEach((element) => modifyJsxAttribute(element, attr));
+  }
+}
+
+function applyAstMergeJsxElements(sourceFile: SourceFile, elements: PatchAstJsxElement[]): void {
+  for (const element of elements) {
+    const parentElements = findJsxElements(sourceFile, element.parent.selector);
+    if (parentElements.length === 0) throw new Error("Parent element not found");
+
+    parentElements
+      .filter((parentElement) => parentElement.getKind() === SyntaxKind.JsxElement)
+      .forEach((parentElement) => {
+        const parentBody = parentElement
+          .getChildren()
+          .filter((child) => {
+            if (parentElement.getKind() === SyntaxKind.JsxElement) {
+              const jsxElement = parentElement as JsxElement;
+              return child !== jsxElement.getOpeningElement() && child !== jsxElement.getClosingElement();
+            }
+            return true;
+          })
+          .map((child) => child.getText())
+          .join("\n");
+
+        (parentElement as JsxElement).setBodyText(
+          `${parentBody}${generateJsxFromElement(element.name, element.attributes)}`,
+        );
+      });
+  }
+}
+
 export function applyAstMerge(targetPath: string, { patch }: PatchFilesAst): void {
   const project = new Project();
   const sourceFile = project.addSourceFileAtPath(targetPath);
 
   if (patch.imports) {
-    for (const imp of patch.imports) {
-      sourceFile.addImportDeclaration({
-        moduleSpecifier: imp.from,
-        namedImports: imp.import ? imp.import : undefined,
-      });
-    }
+    applyAstMergeImports(sourceFile, patch.imports);
   }
 
   if (patch.jsx?.attributes) {
-    for (const attr of patch.jsx.attributes) {
-      const elements = findJsxElements(sourceFile, attr.selector);
-      if (elements.length === 0) throw new Error("Element not found");
-
-      elements.forEach((element) => modifyJsxAttribute(element, attr));
-    }
+    applyAstMergeJsxAttributes(sourceFile, patch.jsx.attributes);
   }
 
   if (patch.jsx?.elements) {
-    for (const element of patch.jsx.elements) {
-      const parentElements = findJsxElements(sourceFile, element.parent.selector);
-      if (parentElements.length === 0) throw new Error("Parent element not found");
-
-      parentElements
-        .filter((parentElement) => parentElement.getKind() === SyntaxKind.JsxElement)
-        .forEach((parentElement) => {
-          const parentBody = parentElement
-            .getChildren()
-            .filter((child) => {
-              if (parentElement.getKind() === SyntaxKind.JsxElement) {
-                const jsxElement = parentElement as JsxElement;
-                return child !== jsxElement.getOpeningElement() && child !== jsxElement.getClosingElement();
-              }
-              return true;
-            })
-            .map((child) => child.getText())
-            .join("\n");
-
-          (parentElement as JsxElement).setBodyText(
-            `${parentBody}${generateJsxFromElement(element.name, element.attributes)}`,
-          );
-        });
-    }
+    applyAstMergeJsxElements(sourceFile, patch.jsx.elements);
   }
 
   sourceFile.saveSync();
