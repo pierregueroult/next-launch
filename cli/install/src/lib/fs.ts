@@ -47,26 +47,17 @@ export async function copyDirectory(source: string, destination: string): Promis
 }
 
 export async function copyFile(source: string, destination: string): Promise<void> {
-  try {
+  if (await fileExists(destination)) {
     try {
-      await fs.promises.access(destination);
-
-      mergeFiles(source, destination);
+      await mergeFiles(source, destination);
     } catch (error: unknown) {
-      if (error instanceof Error && "code" in error) {
-        if (error.code === "ENOENT") {
-          await fs.promises.copyFile(source, destination);
-        } else {
-          throw error;
-        }
-      } else {
-        throw new Error("Unknown error");
-      }
+      if (globalThis.isVerbose) console.error(error);
+      console.log("TODO: Error merging files");
+      process.exit(1);
     }
-  } catch (error: unknown) {
-    console.log("TODO: Error copying file");
-    if (globalThis.isVerbose) console.error(error);
-    process.exit(1);
+  } else {
+    if (source.endsWith(".patch.json")) return;
+    await fs.promises.copyFile(source, destination);
   }
 }
 
@@ -82,6 +73,15 @@ export async function directoryExists(path: string): Promise<boolean> {
 export function directoryExistsSync(path: string): boolean {
   try {
     fs.accessSync(path, fs.constants.F_OK);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export async function fileExists(path: string): Promise<boolean> {
+  try {
+    await fs.promises.access(path);
     return true;
   } catch {
     return false;

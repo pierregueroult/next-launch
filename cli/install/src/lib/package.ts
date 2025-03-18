@@ -46,17 +46,17 @@ export async function addCommands(commands: Commands, packageDir: string): Promi
   }
 }
 
-export async function addIgnores(ignore: Ignores, packageDir: string): Promise<Ignores> {
+export async function addIgnores(ignores: Ignores, packageDir: string): Promise<Ignores> {
   const filePath: string = path.join(packageDir, "ignores.yaml");
 
   if (fs.existsSync(filePath)) {
     const newIgnore: Ignores = yamlParser.readYamlSync<Ignores>(filePath);
 
     return {
-      git: `${ignore.git}\n${newIgnore.git}`,
+      git: `${ignores.git}\n${newIgnore.git}`,
     };
   }
-  return ignore;
+  return ignores;
 }
 
 export async function generatePackageJson(

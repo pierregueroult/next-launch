@@ -10,42 +10,36 @@ export async function setupProject(options: RequiredOptions): Promise<void> {
   const projectDir: string = path.resolve(process.cwd(), options.name);
   const baseTemplateDir: string = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../starter/base");
 
-  // Copying the base template to the project directory
   await createDirectory(projectDir, true);
   await copyDirectory(baseTemplateDir, projectDir);
 
-  // Handle templates options (including there dependencies and commands)
   let dependencies: Dependencies = await addDependencies({ dependencies: {}, devDependencies: {} }, baseTemplateDir);
   let commands: Commands = await addCommands({ commands: {} }, baseTemplateDir);
   let ignores: Ignores = await addIgnores({ git: "" }, baseTemplateDir);
 
-  if (options.tailwind) {
-    const tailwindTemplateDir: string = path.join(
-      path.dirname(fileURLToPath(import.meta.url)),
-      "../../starter/options/tailwind",
-    );
+  const templateOptions: { [key: string]: boolean } = {
+    ...Object.entries(options)
+      .filter(([, value]) => typeof value === "boolean")
+      .reduce((acc, [key, value]) => {
+        acc[key] = value;
+        return acc;
+      }, {}),
+  };
 
-    await copyDirectory(tailwindTemplateDir, projectDir);
+  for (const [key, value] of Object.entries(templateOptions)) {
+    if (value) {
+      const templateDir: string = path.join(
+        path.dirname(fileURLToPath(import.meta.url)),
+        `../../starter/options/${key}`,
+      );
+      dependencies = await addDependencies(dependencies, templateDir);
+      commands = await addCommands(commands, templateDir);
+      ignores = await addIgnores(ignores, templateDir);
 
-    dependencies = await addDependencies(dependencies, tailwindTemplateDir);
-    commands = await addCommands(commands, tailwindTemplateDir);
-    ignores = await addIgnores(ignores, tailwindTemplateDir);
+      await copyDirectory(templateDir, projectDir);
+    }
   }
 
-  if (options.emails) {
-    const emailsTemplateDir: string = path.join(
-      path.dirname(fileURLToPath(import.meta.url)),
-      "../../starter/options/emails",
-    );
-
-    await copyDirectory(emailsTemplateDir, projectDir);
-
-    dependencies = await addDependencies(dependencies, emailsTemplateDir);
-    commands = await addCommands(commands, emailsTemplateDir);
-    ignores = await addIgnores(ignores, emailsTemplateDir);
-  }
-
-  // Generate the package.json file
   await generatePackageJson(dependencies, commands, projectDir, options.name);
   await generateGitIgnore(ignores, projectDir);
 

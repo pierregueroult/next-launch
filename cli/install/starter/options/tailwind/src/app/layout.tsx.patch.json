@@ -1,0 +1,24 @@
+{
+  "type": "ast",
+  "file": "src/app/layout.tsx",
+  "patch": {
+    "imports": [
+      {
+        "from": "@/styles/globals.css"
+      }
+    ],
+    "jsx": {
+      "attributes": [
+        {
+          "component": "RootLayout",
+          "selector": {
+            "element": "html"
+          },
+          "name": "className",
+          "actions": "add",
+          "value": "antialiased"
+        }
+      ]
+    }
+  }
+}
