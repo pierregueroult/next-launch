@@ -4,7 +4,7 @@ import { setupProject } from "./lib/project.js";
 import { getCliVersion } from "./lib/version.js";
 import { RequiredOptions, type Options } from "./schemas/options.js";
 import { parseOptions, parseRequiredOptions } from "./utils/parse-options.js";
-import printMotd from "./utils/print-motd.js";
+import { startMotd, endMotd } from "./utils/print-motd.js";
 import { booleanPrompt, selectPrompt, projectNamePrompt } from "./utils/prompts.js";
 import { program } from "commander";
 
@@ -20,17 +20,12 @@ program
   .option("--package-manager <package-manager>", "The package manager to use")
   .description(CLI_DESCRIPTION)
   .action(async (name, flags): Promise<void> => {
-    // * Initialize options
     globalThis.isVerbose = flags && "verbose" in flags && flags.verbose === true;
     const options: Options = parseOptions(name ? { name, ...flags } : flags);
-    await printMotd();
+    await startMotd();
 
-    // * Prompt for options if not provided
     if (!options.name) {
       options.name = await projectNamePrompt("What is the name of the project ?", "", "my-awesome-next-launch-project");
-    }
-    if (!options.tailwind) {
-      options.tailwind = await booleanPrompt("Would you like to add tailwindcss to the project?", true);
     }
     if (!options.git) {
       options.git = await booleanPrompt("Would you like to initialize a git repository?", true);
@@ -49,16 +44,20 @@ program
         "pnpm",
       );
     }
+    if (!options.tailwind) {
+      options.tailwind = await booleanPrompt("Would you like to add tailwindcss to the project?", true);
+    }
+    if (!options["react-scan"]) {
+      options["react-scan"] = await booleanPrompt("Would you like to add react-scan to the project?", true);
+    }
     if (!options.emails) {
       options.emails = await booleanPrompt("Would you like to add email support to the project?", true);
     }
 
-    // * Setup the project
     const completedOptions: RequiredOptions = parseRequiredOptions(options);
     await setupProject(completedOptions);
 
-    // * Print success message
-    console.log("Project setup complete!");
+    endMotd(completedOptions.name, completedOptions["package-manager"]);
   });
 
 program.parse(process.argv);

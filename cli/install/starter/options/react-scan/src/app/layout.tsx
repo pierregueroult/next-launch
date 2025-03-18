@@ -1,6 +1,6 @@
+import { ReactScan } from "@/components/react-scan/react-scan";
 import React, { type ReactNode } from "react";
 import type { Metadata } from "next";
-import "@/styles/globals.css";
 
 export const metadata: Metadata = {
   title: "Welcome to next-launch",
@@ -13,7 +13,8 @@ type RootLayoutProps = Readonly<{
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" className="antialiased">
+    <html lang="en">
+      <ReactScan />
       <body>{children}</body>
     </html>
   );

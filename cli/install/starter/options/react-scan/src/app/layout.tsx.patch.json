@@ -1,0 +1,27 @@
+{
+  "type": "ast",
+  "file": "src/app/layout.tsx",
+  "patch": {
+    "imports": [
+      {
+        "from": "@/components/react-scan/react-scan",
+        "import": ["ReactScan"]
+      }
+    ],
+    "jsx": {
+      "elements": [
+        {
+          "name": "ReactScan",
+          "attributes": [],
+          "children": [],
+          "parent": {
+            "component": "RootLayout",
+            "selector": {
+              "element": "html"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
