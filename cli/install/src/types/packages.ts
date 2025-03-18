@@ -8,14 +8,18 @@ export type Dependencies = {
 };
 
 export type YamlDependencies = {
-  dependencies: {
-    name: string;
-    version: string;
-  }[];
-  devDependencies: {
-    name: string;
-    version: string;
-  }[];
+  dependencies:
+    | {
+        name: string;
+        version: string;
+      }[]
+    | null;
+  devDependencies:
+    | {
+        name: string;
+        version: string;
+      }[]
+    | null;
 };
 
 export type YamlCommands = {

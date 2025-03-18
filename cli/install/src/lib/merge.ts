@@ -156,6 +156,41 @@ export function applyAstMerge(targetPath: string, { patch }: PatchFilesAst): voi
     }
   }
 
+  if (patch.jsx && patch.jsx.elements) {
+    for (const element of patch.jsx.elements) {
+      const parentElement = sourceFile.getDescendantsOfKind(SyntaxKind.JsxElement).find((node) => {
+        const tagname = node.getOpeningElement().getTagNameNode().getText();
+        if (tagname === element.parent.selector.element) {
+          if (
+            element.parent.selector.class &&
+            node.getOpeningElement().getAttribute("className")?.getText() !== element.parent.selector.class
+          ) {
+            return false;
+          } else if (
+            element.parent.selector.id &&
+            node.getOpeningElement().getAttribute("id")?.getText() !== element.parent.selector.id
+          ) {
+            return false;
+          }
+          return true;
+        }
+        return false;
+      });
+
+      if (!parentElement) {
+        throw new Error("Parent element not found");
+      }
+
+      const parentBody = parentElement
+        .getChildren()
+        .filter((child) => child !== parentElement.getOpeningElement() && child !== parentElement.getClosingElement())
+        .map((child) => child.getText())
+        .join("\n");
+
+      parentElement.setBodyText(`${parentBody}${generateJsxFromElement(element.name, element.attributes)}`);
+    }
+  }
+
   sourceFile.saveSync();
 }
 
@@ -166,3 +201,17 @@ export function applyConcatMerge(targetPath: string, patch: PatchFilesConcat): v
 // TODO: Implement the following functions
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function applyJsonMerge(targetPath: string, patch: PatchFilesJson): void {}
+
+function generateJsxFromElement(name: string, attributes: { value?: string; name?: string }[]) {
+  // TODO: Handle the case where the element has children
+  const attr = attributes
+    .map((attr) => {
+      if (attr.value) return `${attr.name}="${attr.value}"`;
+      return attr.name;
+    })
+    .filter(Boolean)
+    .join(" ");
+
+  if (attr) return `<${name} ${attr}/>`;
+  return `<${name}/>`;
+}

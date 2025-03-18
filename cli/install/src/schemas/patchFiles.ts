@@ -5,26 +5,52 @@ export const patchFilesSchema = z.discriminatedUnion("type", [
     type: z.literal("ast"),
     file: z.string(),
     patch: z.object({
-      imports: z.array(
-        z.object({
-          from: z.string(),
-          import: z.array(z.string()).optional(),
-        }),
-      ),
-      jsx: z.object({
-        attributes: z.array(
+      imports: z
+        .array(
           z.object({
-            component: z.string(),
-            selector: z.object({
-              element: z.string(),
-              id: z.string().optional(),
-              class: z.string().optional(),
-            }),
-            name: z.string(),
-            actions: z.enum(["add", "replace", "remove"]),
-            value: z.string().optional(),
+            from: z.string(),
+            import: z.array(z.string()).optional(),
           }),
-        ),
+        )
+        .optional(),
+      jsx: z.object({
+        attributes: z
+          .array(
+            z.object({
+              component: z.string(),
+              selector: z.object({
+                element: z.string(),
+                id: z.string().optional(),
+                class: z.string().optional(),
+              }),
+              name: z.string(),
+              actions: z.enum(["add", "replace", "remove"]),
+              value: z.string().optional(),
+            }),
+          )
+          .optional(),
+        elements: z
+          .array(
+            z.object({
+              name: z.string(),
+              attributes: z.array(
+                z.object({
+                  name: z.string(),
+                  value: z.string().optional(),
+                }),
+              ),
+              children: z.array(z.string()),
+              parent: z.object({
+                component: z.string(),
+                selector: z.object({
+                  element: z.string(),
+                  id: z.string().optional(),
+                  class: z.string().optional(),
+                }),
+              }),
+            }),
+          )
+          .optional(),
       }),
     }),
   }),

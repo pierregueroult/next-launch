@@ -10,6 +10,14 @@ export async function addDependencies(dependencies: Dependencies, packageDir: st
   if (fs.existsSync(filePath)) {
     const newDependencies: YamlDependencies = yamlParser.readYamlSync<YamlDependencies>(filePath);
 
+    if (newDependencies.dependencies === null) {
+      newDependencies.dependencies = [];
+    }
+
+    if (newDependencies.devDependencies === null) {
+      newDependencies.devDependencies = [];
+    }
+
     return {
       dependencies: {
         ...dependencies.dependencies,
