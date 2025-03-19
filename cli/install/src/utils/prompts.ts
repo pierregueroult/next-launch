@@ -9,6 +9,7 @@ export async function booleanPrompt(message: string, initialValue: boolean): Pro
       default: initialValue,
     });
 
+    printPipe(2);
     return response;
   } catch (error: unknown) {
     if (error instanceof Error && error.name === "ExitPromptError") {
@@ -32,6 +33,7 @@ export async function selectPrompt(
       default: options.find((option) => option.value === initialValue)?.label,
     });
 
+    printPipe(2);
     return response;
   } catch (error: unknown) {
     if (error instanceof Error && error.name === "ExitPromptError") {
@@ -56,7 +58,7 @@ export async function projectNamePrompt(message: string, initialValue: string): 
         return true;
       },
     });
-
+    printPipe(2);
     return response;
   } catch (error: unknown) {
     if (error instanceof Error && error.name === "ExitPromptError") {
@@ -79,27 +81,18 @@ export async function projectOptionsPrompt(
     }));
 
     const selectedOptions = await checkbox({
-      message,
+      message: `${message} \n (Use ↑/↓ to navigate, space to select, enter to confirm)`,
       choices,
+      instructions: false,
       validate: (selectedValues) => {
         for (const selected of selectedValues) {
           const option = options.find((opt) => opt.value === selected.value);
 
-          if (option && option.requires && option.requires.length > 0) {
-            const missingDependencies = option.requires.filter(
-              (req) =>
-                !selectedValues.includes({
-                  value: req,
-                }),
-            );
-
-            if (missingDependencies.length > 0) {
-              const missingNames = missingDependencies.map((dep) => {
-                const depOption = options.find((opt) => opt.value === dep);
-                return depOption ? depOption.name : dep;
-              });
-
-              return `L'option "${option.name}" nécessite que vous sélectionniez également: ${missingNames.join(", ")}`;
+          if (option.requires.length > 0) {
+            for (const required of option.requires) {
+              if (!selectedValues.find((selected) => selected.value === required)) {
+                return `The option "${option.message}" requires "${options.find((opt) => opt.value === required)?.message}"`;
+              }
             }
           }
         }
@@ -108,6 +101,7 @@ export async function projectOptionsPrompt(
       },
     });
 
+    printPipe(2);
     return selectedOptions;
   } catch (error: unknown) {
     if (error instanceof Error && error.name === "ExitPromptError") {
@@ -116,5 +110,11 @@ export async function projectOptionsPrompt(
     } else {
       throw error;
     }
+  }
+}
+
+function printPipe(count: number) {
+  for (let i = 0; i < count; i++) {
+    console.log("\x1b[90m%s\x1b[0m", "⎜");
   }
 }
