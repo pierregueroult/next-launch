@@ -5,7 +5,7 @@ import { getCliVersion } from "./lib/version.js";
 import { RequiredOptions, type Options } from "./schemas/options.js";
 import { parseOptions, parseRequiredOptions } from "./utils/parse-options.js";
 import { startMotd, endMotd } from "./utils/print-motd.js";
-import { booleanPrompt, selectPrompt, projectNamePrompt } from "./utils/prompts.js";
+import { booleanPrompt, selectPrompt, projectNamePrompt, projectOptionsPrompt } from "./utils/prompts.js";
 import { program } from "commander";
 
 program.name(CLI_NAME).description(CLI_DESCRIPTION).version(getCliVersion());
@@ -44,15 +44,27 @@ program
         "pnpm",
       );
     }
-    if (!options.tailwind) {
-      options.tailwind = await booleanPrompt("Would you like to add tailwindcss to the project?", true);
-    }
-    if (!options["react-scan"]) {
-      options["react-scan"] = await booleanPrompt("Would you like to add react-scan to the project?", true);
-    }
-    if (!options.emails) {
-      options.emails = await booleanPrompt("Would you like to add email support to the project?", true);
-    }
+
+    await projectOptionsPrompt("Select the options you would like to include in your project", [
+      {
+        name: "tailwind",
+        message: "Add TailwindCSS",
+        value: "tailwind",
+        requires: [],
+      },
+      {
+        name: "prisma",
+        message: "Add Prisma",
+        value: "prisma",
+        requires: [],
+      },
+      {
+        name: "auth",
+        message: "Add authentication (needs prisma)",
+        value: "auth",
+        requires: ["prisma"],
+      },
+    ]);
 
     const completedOptions: RequiredOptions = parseRequiredOptions(options);
     await setupProject(completedOptions);
