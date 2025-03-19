@@ -1,0 +1,9 @@
+dependencies:
+
+devDependencies:
+  - name: "eslint"
+    version: "^9"
+  - name: "eslint-config-next"
+    version: "15.2.3"
+  - name: "@eslint/eslintrc"
+    version: "^3"
