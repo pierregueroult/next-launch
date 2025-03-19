@@ -1,29 +1,29 @@
-### Description du bug
+### Bug Description
 
-<!-- Décrivez brièvement le bug que vous avez corrigé. -->
+<!-- Briefly describe the bug you have fixed. -->
 
-### Comment la correction fonctionne-t-elle ?
+### How Does the Fix Work?
 
-<!-- Expliquez brièvement comment vous avez corrigé le bug. -->
+<!-- Briefly explain how you fixed the bug. -->
 
-### Types de changements
+### Types of Changes
 
-- [ ] Correction de bug
-- [ ] Amélioration de la fonctionnalité existante
-- [ ] Autre (veuillez spécifier) :
+- [ ] Bug fix
+- [ ] Enhancement of an existing feature
+- [ ] Other (please specify):
 
-### Tests effectués
+### Tests Performed
 
-<!-- Décrivez les tests que vous avez effectués pour vérifier que le bug est corrigé. -->
+<!-- Describe the tests you have performed to verify that the bug is fixed. -->
 
-### Liens vers des tickets/issue
+### Links to Tickets/Issues
 
-<!-- Liez cette PR à une issue ou à un ticket si nécessaire. -->
+<!-- Link this PR to an issue or ticket if necessary. -->
 
 ### Checklist
 
-- [ ] Mon code suit les bonnes pratiques du projet.
-- [ ] J'ai testé mes changements localement.
-- [ ] J'ai mis à jour la documentation si nécessaire.
-- [ ] Ma correction de bug n'introduit pas de nouveaux bugs.
-- [ ] J'ai vérifié que tous les tests passent. (pas obligatoire pour le moment car les tests ne sont pas encore implémentés)
+- [ ] My code follows the project's best practices.
+- [ ] I have tested my changes locally.
+- [ ] I have updated the documentation if necessary.
+- [ ] My bug fix does not introduce new bugs.
+- [ ] I have checked that all tests pass. (Not mandatory for now, as tests have not been implemented yet)

@@ -1,25 +1,25 @@
 ### Description
 
-<!-- Décrivez brièvement la fonctionnalité que vous avez ajoutée ou modifiée. -->
+<!-- Briefly describe the feature you have added or modified. -->
 
-### Types de changements
+### Types of Changes
 
-- [ ] Nouvelle fonctionnalité
-- [ ] Amélioration de la fonctionnalité existante
-- [ ] Autre (veuillez spécifier) :
+- [ ] New feature
+- [ ] Enhancement of an existing feature
+- [ ] Other (please specify):
 
-### Tests effectués
+### Tests Performed
 
-<!-- Indiquez quels tests ont été effectués pour vérifier votre modification. -->
+<!-- Indicate which tests have been performed to verify your modification. -->
 
-### Liens vers des tickets/issue
+### Links to Tickets/Issues
 
-<!-- Liez cette PR à une issue ou à un ticket si nécessaire. -->
+<!-- Link this PR to an issue or ticket if necessary. -->
 
 ### Checklist
 
-- [ ] Mon code suit les bonnes pratiques du projet.
-- [ ] J'ai écrit des tests pour mes changements. (pas obligatoire pour le moment car les tests ne sont pas encore implémentés)
-- [ ] J'ai mis à jour la documentation si nécessaire.
-- [ ] Mes changements n'ont pas introduit de nouveaux bugs.
-- [ ] J'ai vérifié que tous les tests passent. (pas obligatoire pour le moment car les tests ne sont pas encore implémentés)
+- [ ] My code follows the project's best practices.
+- [ ] I have written tests for my changes. (Not mandatory for now, as tests have not been implemented yet)
+- [ ] I have updated the documentation if necessary.
+- [ ] My changes have not introduced any new bugs.
+- [ ] I have checked that all tests pass. (Not mandatory for now, as tests have not been implemented yet)
