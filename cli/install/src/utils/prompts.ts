@@ -72,12 +72,14 @@ export async function projectNamePrompt(message: string, initialValue: string): 
 
 export async function projectOptionsPrompt(
   message: string,
-  options: { name: string; message: string; value: string; requires: string[] }[],
+  options: { message: string; value: string; requires: string[] }[],
+  selected?: string[],
 ): Promise<string[]> {
   try {
     const choices = options.map((option) => ({
-      name: option.message || option.name,
+      name: option.message,
       value: option.value,
+      checked: selected?.includes(option.value) ?? false,
     }));
 
     const selectedOptions = await checkbox({

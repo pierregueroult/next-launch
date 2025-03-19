@@ -1,14 +1,13 @@
+import type { Options } from "../schemas/options.js";
+import { Dependencies, Commands, Ignores } from "../types/packages.js";
 import { installDependencies } from "./dependencies.js";
 import { copyDirectory, createDirectory } from "./fs.js";
 import { initGitRepository } from "./git.js";
 import { addDependencies, generatePackageJson, addCommands, addIgnores, generateGitIgnore } from "./package.js";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
-import { RequiredOptions } from "src/schemas/options.js";
-import { Dependencies, Commands, Ignores } from "src/types/packages.js";
 
-export async function setupProject(options: RequiredOptions): Promise<void> {
-  // Setting up the directory structure
+export async function setupProject(options: Options): Promise<void> {
   const projectDir: string = path.resolve(process.cwd(), options.name);
   const baseTemplateDir: string = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../starter/base");
 

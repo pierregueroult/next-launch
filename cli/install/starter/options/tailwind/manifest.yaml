@@ -1,0 +1,5 @@
+name: tailwind
+version: 1.0.0
+description: "Use Tailwind CSS (v4) to style your app"
+message: "Add Tailwind CSS"
+requires: []

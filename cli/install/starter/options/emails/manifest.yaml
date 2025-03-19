@@ -1,0 +1,5 @@
+name: emails
+version: 1.0.0
+description: "Send emails from your app using Nodemailer and React Email"
+message: "Add email support"
+requires: []
