@@ -1,31 +1,35 @@
 #!/usr/bin/env node
 import { CLI_DESCRIPTION, CLI_NAME } from "./constants.js";
+import { getAllOptions } from "./lib/options.js";
 import { setupProject } from "./lib/project.js";
 import { getCliVersion } from "./lib/version.js";
-import { RequiredOptions, type Options } from "./schemas/options.js";
-import { parseOptions, parseRequiredOptions } from "./utils/parse-options.js";
+import type { Options } from "./schemas/options.js";
+import { parseOptions } from "./utils/parse-options.js";
 import { startMotd, endMotd } from "./utils/print-motd.js";
-import { booleanPrompt, selectPrompt, projectNamePrompt } from "./utils/prompts.js";
-import { program } from "commander";
+import { booleanPrompt, selectPrompt, projectNamePrompt, projectOptionsPrompt } from "./utils/prompts.js";
+import { Command } from "commander";
+
+const program = new Command();
 
 program.name(CLI_NAME).description(CLI_DESCRIPTION).version(getCliVersion());
 
-program
-  .command("init", { isDefault: true })
+const initCommand = new Command("init")
   .argument("[name]", "The name of the project")
-  .option("--verbose", "Print additional information during the project creation process")
-  .option("--tailwind", "Add tailwindcss and related utilities to the boilerplate")
   .option("--git", "Initialize a git repository")
   .option("--install", "Install dependencies after the project is created")
   .option("--package-manager <package-manager>", "The package manager to use")
-  .description(CLI_DESCRIPTION)
+  .option("--verbose", "Print additional information during the project creation process")
   .action(async (name, flags): Promise<void> => {
     globalThis.isVerbose = flags && "verbose" in flags && flags.verbose === true;
-    const options: Options = parseOptions(name ? { name, ...flags } : flags);
+    let options: Options = parseOptions(name ? { name, ...flags } : flags);
+
+    console.log("options", options);
+    console.log(name, flags);
+
     await startMotd();
 
     if (!options.name) {
-      options.name = await projectNamePrompt("What is the name of the project ?", "", "my-awesome-next-launch-project");
+      options.name = await projectNamePrompt("What is the name of the project ?", "");
     }
     if (!options.git) {
       options.git = await booleanPrompt("Would you like to initialize a git repository?", true);
@@ -44,20 +48,34 @@ program
         "pnpm",
       );
     }
-    if (!options.tailwind) {
-      options.tailwind = await booleanPrompt("Would you like to add tailwindcss to the project?", true);
-    }
-    if (!options["react-scan"]) {
-      options["react-scan"] = await booleanPrompt("Would you like to add react-scan to the project?", true);
-    }
-    if (!options.emails) {
-      options.emails = await booleanPrompt("Would you like to add email support to the project?", true);
-    }
 
-    const completedOptions: RequiredOptions = parseRequiredOptions(options);
-    await setupProject(completedOptions);
+    const optionsList = getAllOptions();
 
-    endMotd(completedOptions.name, completedOptions["package-manager"]);
+    const selectedOptions = await projectOptionsPrompt(
+      "Select the options you would like to include in your project",
+      optionsList,
+      optionsList.map((option) => (options[option.name] ? option.name : false)).filter(Boolean) as string[],
+    );
+
+    options = {
+      ...options,
+      ...(selectedOptions.reduce((acc, option) => {
+        acc[option] = true;
+        return acc;
+      }, {}) as Options),
+    };
+
+    await setupProject(options);
+
+    endMotd(options.name, options["package-manager"]);
   });
+
+const options = getAllOptions();
+
+options.forEach((option) => {
+  initCommand.option(`--${option.name}`, `Include the "${option.message}" option`);
+});
+
+program.addCommand(initCommand, { isDefault: true });
 
 program.parse(process.argv);

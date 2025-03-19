@@ -1,0 +1,5 @@
+name: prisma
+version: 1.0.0
+description: "Use Prisma to interact with your database"
+message: "Add Prisma ORM"
+requires: []
