@@ -4,7 +4,9 @@ import ora from "ora";
 
 const execPromise = promisify(exec);
 
-export async function initGitRepository(projectDir: string): Promise<void> {
+export async function initGitRepository(projectDir: string, isFirst: boolean = false): Promise<void> {
+  console.log("\x1b[90m│");
+  if (!isFirst) console.log("\x1b[90m│");
   const spinner = ora("Initializing git repository").start();
 
   try {

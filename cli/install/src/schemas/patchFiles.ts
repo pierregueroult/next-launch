@@ -71,3 +71,7 @@ export type PatchFiles = z.infer<typeof patchFilesSchema>;
 export type PatchFilesAst = PatchFiles & { type: "ast" };
 export type PatchFilesConcat = PatchFiles & { type: "concat" };
 export type PatchFilesJson = PatchFiles & { type: "json" };
+
+export type PatchAstImport = PatchFilesAst["patch"]["imports"][number];
+export type PatchAstJsxAttribute = PatchFilesAst["patch"]["jsx"]["attributes"][number];
+export type PatchAstJsxElement = PatchFilesAst["patch"]["jsx"]["elements"][number];
