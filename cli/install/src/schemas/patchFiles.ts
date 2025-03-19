@@ -57,12 +57,17 @@ export const patchFilesSchema = z.discriminatedUnion("type", [
   z.object({
     type: z.literal("concat"),
     file: z.string(),
-    patch: z.object({}),
+    patch: z.object({
+      content: z.string(),
+      position: z.enum(["before", "after"]),
+    }),
   }),
   z.object({
     type: z.literal("json"),
     file: z.string(),
-    patch: z.object({}),
+    patch: z.object({
+      content: z.record(z.unknown()),
+    }),
   }),
 ]);
 

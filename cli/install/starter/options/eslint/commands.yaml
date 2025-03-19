@@ -1,0 +1,3 @@
+commands:
+  - "lint": "next lint"
+  - "ci:lint": "next lint --no-fix"

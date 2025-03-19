@@ -23,9 +23,6 @@ const initCommand = new Command("init")
     globalThis.isVerbose = flags && "verbose" in flags && flags.verbose === true;
     let options: Options = parseOptions(name ? { name, ...flags } : flags);
 
-    console.log("options", options);
-    console.log(name, flags);
-
     await startMotd();
 
     if (!options.name) {

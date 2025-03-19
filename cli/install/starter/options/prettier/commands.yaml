@@ -1,0 +1,3 @@
+commands:
+  - "format": "prettier --write . --config prettier.config.mjs"
+  - "ci:format": "prettier --check . --config prettier.config.mjs"

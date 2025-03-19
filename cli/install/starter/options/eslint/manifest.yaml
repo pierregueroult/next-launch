@@ -1,0 +1,5 @@
+name: eslint
+version: 1.0.0
+description: "Use ESLint to lint your code"
+message: "Add ESLint"
+requires: []
