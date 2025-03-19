@@ -25,7 +25,7 @@ program
     await startMotd();
 
     if (!options.name) {
-      options.name = await projectNamePrompt("What is the name of the project ?", "", "my-awesome-next-launch-project");
+      options.name = await projectNamePrompt("What is the name of the project ?", "");
     }
     if (!options.git) {
       options.git = await booleanPrompt("Would you like to initialize a git repository?", true);

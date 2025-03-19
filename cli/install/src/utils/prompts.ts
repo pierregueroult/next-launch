@@ -1,19 +1,23 @@
 import { CANCEL_MESSAGE } from "../constants.js";
 import { directoryExistsSync } from "../lib/fs.js";
-import { confirm, isCancel, cancel, select, text } from "@clack/prompts";
+import Enquirer from "enquirer";
 
 export async function booleanPrompt(message: string, initialValue: boolean): Promise<boolean> {
-  const response: boolean | symbol = await confirm({
-    message,
-    initialValue,
-  });
+  try {
+    const response = await Enquirer.prompt<{
+      confirmation: boolean;
+    }>({
+      type: "confirm",
+      message: message,
+      initial: initialValue,
+      name: "confirmation",
+    });
 
-  if (isCancel(response)) {
-    cancel(CANCEL_MESSAGE);
+    return response.confirmation;
+  } catch {
+    console.log(CANCEL_MESSAGE);
     process.exit(0);
   }
-
-  return response === true;
 }
 
 export async function selectPrompt(
@@ -21,37 +25,45 @@ export async function selectPrompt(
   options: { label: string; value: string }[],
   initialValue: string,
 ): Promise<string> {
-  const response: string | symbol = await select({
-    message,
-    options,
-    initialValue,
-  });
+  try {
+    const response = await Enquirer.prompt<{
+      selection: string;
+    }>({
+      type: "select",
+      name: "selection",
+      message: message,
+      choices: options.map((option) => ({ name: option.label, value: option.value })),
+      initial: options.findIndex((option) => option.value === initialValue),
+    });
 
-  if (isCancel(response)) {
-    cancel(CANCEL_MESSAGE);
+    return options.find((option) => option.label === response.selection)?.value || "";
+  } catch {
+    console.log(CANCEL_MESSAGE);
     process.exit(0);
   }
-
-  return response;
 }
 
-export async function projectNamePrompt(message: string, initialValue: string, placeholder: string): Promise<string> {
-  const response: string | symbol = await text({
-    message,
-    initialValue,
-    placeholder,
-    validate: (value: string) => {
-      if (value.length === 0) return "Please enter a string with at least one character";
-      if (value.includes(" ")) return "Please enter a string without spaces";
-      if (!/^[a-zA-Z0-9-]+$/.test(value)) return "Please enter a string without special characters";
-      if (directoryExistsSync(value)) return "A directory with that name already exists";
-    },
-  });
+export async function projectNamePrompt(message: string, initialValue: string): Promise<string> {
+  try {
+    const response = await Enquirer.prompt<{
+      projectName: string;
+    }>({
+      type: "input",
+      name: "projectName",
+      message: message,
+      initial: initialValue,
+      validate: (value: string) => {
+        if (value.length === 0) return "Please enter a string with at least one character";
+        if (value.includes(" ")) return "Please enter a string without spaces";
+        if (!/^[a-zA-Z0-9-]+$/.test(value)) return "Please enter a string without special characters";
+        if (directoryExistsSync(value)) return "A directory with that name already exists";
+        return true;
+      },
+    });
 
-  if (isCancel(response)) {
-    cancel(CANCEL_MESSAGE);
+    return response.projectName;
+  } catch {
+    console.log(CANCEL_MESSAGE);
     process.exit(0);
   }
-
-  return response;
 }

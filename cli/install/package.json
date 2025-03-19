@@ -23,8 +23,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@clack/prompts": "^0.10.0",
     "commander": "^13.1.0",
+    "enquirer": "^2.4.1",
     "figlet": "^1.8.0",
     "gradient-string": "^3.0.0",
     "js-yaml": "^4.1.0",
