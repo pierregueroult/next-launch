@@ -1,5 +1,11 @@
 import { PatchFilesConcat } from "../../schemas/patchFiles.js";
+import { readFileSync, writeFileSync } from "node:fs";
 
-// TODO: Implement the following functions
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function applyConcatMerge(targetPath: string, patch: PatchFilesConcat): void {}
+export function applyConcatMerge(targetPath: string, patch: PatchFilesConcat): void {
+  const targetContent = readFileSync(targetPath, "utf-8");
+  const { content, position } = patch.patch;
+
+  const newContent = position === "before" ? `${content}\n${targetContent}` : `${targetContent}\n${content}`;
+
+  writeFileSync(targetPath, newContent);
+}
