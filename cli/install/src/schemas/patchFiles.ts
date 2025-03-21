@@ -51,6 +51,31 @@ export const patchFilesSchema = z.discriminatedUnion("type", [
             }),
           )
           .optional(),
+        providers: z
+          .array(
+            z.object({
+              component: z.string(),
+              props: z.record(z.string()),
+              parent: z.object({
+                component: z.string(),
+                selector: z.object({
+                  element: z.string(),
+                  id: z.string().optional(),
+                  class: z.string().optional(),
+                }),
+              }),
+            }),
+          )
+          .optional(),
+        declarations: z
+          .array(
+            z.object({
+              component: z.string(),
+              priority: z.number(),
+              content: z.string(),
+            }),
+          )
+          .optional(),
       }),
     }),
   }),
@@ -78,5 +103,8 @@ export type PatchFilesConcat = PatchFiles & { type: "concat" };
 export type PatchFilesJson = PatchFiles & { type: "json" };
 
 export type PatchAstImport = PatchFilesAst["patch"]["imports"][number];
+
 export type PatchAstJsxAttribute = PatchFilesAst["patch"]["jsx"]["attributes"][number];
 export type PatchAstJsxElement = PatchFilesAst["patch"]["jsx"]["elements"][number];
+export type PatchAstJsxProvider = PatchFilesAst["patch"]["jsx"]["providers"][number];
+export type PatchAstJsxDeclaration = PatchFilesAst["patch"]["jsx"]["declarations"][number];
