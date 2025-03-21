@@ -6,6 +6,7 @@ import {
   PatchAstJsxProvider,
   PatchFilesAst,
 } from "../../schemas/patchFiles.js";
+import { format } from "prettier";
 import { JsxAttribute, JsxElement, JsxSelfClosingElement, Project, SourceFile, SyntaxKind } from "ts-morph";
 
 function generateJsxFromElement(name: string, attributes: { value?: string; name?: string }[]) {
@@ -154,7 +155,7 @@ function applyAstMergeJsxDeclarations(sourceFile: SourceFile, declarations: Patc
   }
 }
 
-export function applyAstMerge(targetPath: string, { patch }: PatchFilesAst): void {
+export async function applyAstMerge(targetPath: string, { patch }: PatchFilesAst): void {
   const project = new Project();
   const sourceFile = project.addSourceFileAtPath(targetPath);
 
@@ -179,4 +180,14 @@ export function applyAstMerge(targetPath: string, { patch }: PatchFilesAst): voi
   }
 
   sourceFile.saveSync();
+
+  let updatedCode = sourceFile.getFullText();
+
+  try {
+    updatedCode = await format(updatedCode, { parser: "typescript" });
+    sourceFile.replaceWithText(updatedCode);
+    sourceFile.saveSync();
+  } catch {
+    console.error("Failed to format the code");
+  }
 }

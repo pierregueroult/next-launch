@@ -71,6 +71,9 @@ importers:
       ora:
         specifier: ^8.2.0
         version: 8.2.0
+      prettier:
+        specifier: ^3.5.0
+        version: 3.5.0
       ts-morph:
         specifier: ^25.0.1
         version: 25.0.1
