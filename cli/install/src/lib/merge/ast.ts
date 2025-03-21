@@ -1,4 +1,12 @@
-import { PatchAstImport, PatchAstJsxAttribute, PatchAstJsxElement, PatchFilesAst } from "../../schemas/patchFiles.js";
+import {
+  PatchAstImport,
+  PatchAstJsxAttribute,
+  PatchAstJsxDeclaration,
+  PatchAstJsxElement,
+  PatchAstJsxProvider,
+  PatchFilesAst,
+} from "../../schemas/patchFiles.js";
+import { format } from "prettier";
 import { JsxAttribute, JsxElement, JsxSelfClosingElement, Project, SourceFile, SyntaxKind } from "ts-morph";
 
 function generateJsxFromElement(name: string, attributes: { value?: string; name?: string }[]) {
@@ -49,7 +57,9 @@ function modifyJsxAttribute(
       openingElement.addAttribute({ name: attr.name, initializer: `"${value}"` });
       break;
     case "replace":
-      openingElement.insertAttribute(1, { name: attr.name, initializer: `"${value}"` });
+      if (attribute && attribute.getKind() === SyntaxKind.JsxAttribute) {
+        (attribute as JsxAttribute).setInitializer(`${value}`);
+      }
       break;
     case "remove":
       attribute?.remove();
@@ -103,7 +113,49 @@ function applyAstMergeJsxElements(sourceFile: SourceFile, elements: PatchAstJsxE
   }
 }
 
-export function applyAstMerge(targetPath: string, { patch }: PatchFilesAst): void {
+function applyAstMergeJsxProviders(sourceFile: SourceFile, providers: PatchAstJsxProvider[]): void {
+  for (const provider of providers) {
+    const parentsElements = findJsxElements(sourceFile, provider.parent.selector);
+
+    if (parentsElements.length === 0) throw new Error("Element not found");
+
+    parentsElements.forEach((parentElement) => {
+      const parentBody = parentElement
+        .getChildren()
+        .filter((child) => {
+          if (parentElement.getKind() === SyntaxKind.JsxElement) {
+            const jsxElement = parentElement as JsxElement;
+            return child !== jsxElement.getOpeningElement() && child !== jsxElement.getClosingElement();
+          }
+          return true;
+        })
+        .map((child) => child.getText())
+        .join("\n");
+
+      const attributes: string = Object.entries(provider.props || {})
+        .map(([key, value]) => `${key}=${value}`)
+        .join(" ");
+
+      (parentElement as JsxElement).setBodyText(
+        `<${provider.component} ${attributes}>${parentBody}</${provider.component}>`,
+      );
+    });
+  }
+}
+
+function applyAstMergeJsxDeclarations(sourceFile: SourceFile, declarations: PatchAstJsxDeclaration[]): void {
+  const sortedDeclarations = declarations.sort((a, b) => a.priority + b.priority);
+
+  for (const declaration of sortedDeclarations) {
+    const component = sourceFile.getFunctions().find((func) => func.getName() === declaration.component);
+    if (!component) throw new Error("Component not found");
+
+    const body = component.getBodyText();
+    component.setBodyText(`${declaration.content}\n${body}`);
+  }
+}
+
+export async function applyAstMerge(targetPath: string, { patch }: PatchFilesAst): void {
   const project = new Project();
   const sourceFile = project.addSourceFileAtPath(targetPath);
 
@@ -119,5 +171,23 @@ export function applyAstMerge(targetPath: string, { patch }: PatchFilesAst): voi
     applyAstMergeJsxElements(sourceFile, patch.jsx.elements);
   }
 
+  if (patch.jsx?.providers) {
+    applyAstMergeJsxProviders(sourceFile, patch.jsx.providers);
+  }
+
+  if (patch.jsx?.declarations) {
+    applyAstMergeJsxDeclarations(sourceFile, patch.jsx.declarations);
+  }
+
   sourceFile.saveSync();
+
+  let updatedCode = sourceFile.getFullText();
+
+  try {
+    updatedCode = await format(updatedCode, { parser: "typescript" });
+    sourceFile.replaceWithText(updatedCode);
+    sourceFile.saveSync();
+  } catch {
+    console.error("Failed to format the code");
+  }
 }

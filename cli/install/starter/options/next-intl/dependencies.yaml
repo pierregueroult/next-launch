@@ -1,0 +1,5 @@
+dependencies:
+  - name: "next-intl"
+    version: "^3.2"
+
+devDependencies:

@@ -1,0 +1,55 @@
+{
+  "type": "ast",
+  "file": "src/app/layout.tsx",
+  "patch": {
+    "imports": [
+      {
+        "from": "next-intl/server",
+        "import": ["getLocale", "getMessages"]
+      },
+      {
+        "from": "next-intl",
+        "import": ["NextIntlClientProvider", "type AbstractIntlMessages"]
+      }
+    ],
+    "jsx": {
+      "providers": [
+        {
+          "component": "NextIntlClientProvider",
+          "props": {
+            "messages": "{messages}"
+          },
+          "parent": {
+            "component": "RootLayout",
+            "selector": {
+              "element": "body"
+            }
+          }
+        }
+      ],
+      "declarations": [
+        {
+          "priority": 2,
+          "component": "RootLayout",
+          "content": "const messages: AbstractIntlMessages = await getMessages(locale);"
+        },
+        {
+          "priority": 1,
+          "component": "RootLayout",
+          "content": "const locale: string = await getLocale();"
+        }
+      ],
+      "attributes": [
+        {
+          "component": "RootLayout",
+          "selector": {
+            "element": "html"
+          },
+          "name": "lang",
+          "actions": "replace",
+          "value": "{locale}"
+        }
+      ]
+    }
+  }
+}
