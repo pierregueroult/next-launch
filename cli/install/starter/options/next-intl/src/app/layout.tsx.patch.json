@@ -31,7 +31,7 @@
         {
           "priority": 2,
           "component": "RootLayout",
-          "content": "const messages: AbstractIntlMessages = await getMessages(locale);"
+          "content": "const messages: AbstractIntlMessages = await getMessages({locale});"
         },
         {
           "priority": 1,

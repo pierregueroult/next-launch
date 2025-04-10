@@ -1,4 +1,4 @@
-import { Locale } from "@/types/locale";
+import { Locale } from "@/types/locales";
 
 export const locales = ["en", "fr"] as const;
 
