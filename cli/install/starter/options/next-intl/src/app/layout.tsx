@@ -14,7 +14,7 @@ type RootLayoutProps = Readonly<{
 
 export default async function RootLayout({ children }: RootLayoutProps) {
   const locale: string = await getLocale();
-  const messages: AbstractIntlMessages = await getMessages();
+  const messages: AbstractIntlMessages = await getMessages({ locale });
   return (
     <html lang={locale}>
       <body>
